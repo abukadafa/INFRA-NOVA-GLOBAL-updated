@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infranova Global — Building Tomorrow's Communities Today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#082032;
+    --navy-deep:#04121e;
+    --gold:#D4AF37;
+    --gold-soft:#e8caa0;
+    --emerald:#0F9D58;
+    --ivory:#F7F4EE;
+    --charcoal:#1B1F23;
+    --line: rgba(212,175,55,0.25);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--ivory);
+    color:var(--charcoal);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Fraunces', serif;}
+  a{text-decoration:none; color:inherit;}
+
+  /* progress line */
+  #progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background:linear-gradient(90deg, var(--gold), var(--emerald));
+    z-index:999; transition:width .1s linear;
+  }
+
+  /* NAV */
+  nav{
+    position:fixed; top:3px; left:0; right:0; z-index:900;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:20px 48px; transition:background .35s ease, padding .35s ease;
+  }
+  nav.scrolled{ background:rgba(8,32,50,0.92); backdrop-filter:blur(10px); padding:14px 48px; }
+  .logo{ display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-size:20px; font-weight:600; color:#fff; letter-spacing:0.5px;}
+  .logo span{ color:var(--gold); }
+  .navlinks{ display:flex; gap:34px; }
+  .navlinks a{ color:#e7e9eb; font-size:14px; font-weight:500; letter-spacing:.3px; position:relative; padding-bottom:4px;}
+  .navlinks a:hover{ color:var(--gold-soft); }
+  .navcta{ display:flex; gap:14px; align-items:center;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 22px; border-radius:2px; font-size:13px; font-weight:600;
+    letter-spacing:.4px; cursor:pointer; border:1px solid transparent;
+    transition:all .25s ease;
+  }
+  .btn-gold{ background:var(--gold); color:var(--navy-deep); }
+  .btn-gold:hover{ background:var(--gold-soft); transform:translateY(-1px);}
+  .btn-ghost{ border-color:rgba(255,255,255,.4); color:#fff;}
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-soft);}
+  @media(max-width:900px){ .navlinks{display:none;} nav{padding:16px 20px;} }
+
+  /* HERO */
+  .hero{
+    position:relative; min-height:100vh; display:flex; align-items:center;
+    background:
+      radial-gradient(ellipse at 75% 15%, rgba(212,175,55,0.16), transparent 55%),
+      linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 60%, #0a2438 100%);
+    overflow:hidden;
+    padding:140px 48px 0;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.15fr .85fr; gap:60px;
+    max-width:1280px; margin:0 auto; width:100%; position:relative; z-index:3;
+  }
+  .eyebrow{
+    color:var(--gold-soft); font-size:12.5px; letter-spacing:2.5px; text-transform:uppercase;
+    font-weight:600; display:flex; align-items:center; gap:10px; margin-bottom:22px;
+    opacity:0; animation:fadeUp .8s ease forwards; animation-delay:.1s;
+  }
+  .eyebrow::before{ content:''; width:28px; height:1px; background:var(--gold);}
+  .hero h1{
+    color:#fff; font-size:clamp(38px, 5vw, 68px); line-height:1.06; font-weight:600;
+    letter-spacing:-.5px; margin-bottom:26px;
+    opacity:0; animation:fadeUp .9s ease forwards; animation-delay:.25s;
+  }
+  .hero h1 em{ font-style:italic; color:var(--gold-soft); font-weight:500;}
+  .hero p.sub{
+    color:#c7d0d6; font-size:17px; line-height:1.65; max-width:520px; margin-bottom:38px;
+    opacity:0; animation:fadeUp .9s ease forwards; animation-delay:.4s;
+  }
+  .hero-ctas{ display:flex; gap:16px; flex-wrap:wrap; opacity:0; animation:fadeUp .9s ease forwards; animation-delay:.55s;}
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+  /* stat cards floating in hero */
+  .stat-stack{ position:relative; z-index:3; display:flex; flex-direction:column; gap:16px; justify-content:center;}
+  .stat-card{
+    background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12);
+    backdrop-filter:blur(14px); border-radius:4px; padding:22px 26px;
+    opacity:0; animation:fadeUp .8s ease forwards;
+  }
+  .stat-card:nth-child(1){animation-delay:.5s;}
+  .stat-card:nth-child(2){animation-delay:.65s; margin-left:34px;}
+  .stat-card:nth-child(3){animation-delay:.8s;}
+  .stat-card .num{ font-family:'Fraunces',serif; color:var(--gold); font-size:32px; font-weight:600;}
+  .stat-card .lbl{ color:#cfd6da; font-size:13px; margin-top:4px; letter-spacing:.3px;}
+
+  /* skyline signature */
+  .skyline{
+    position:absolute; bottom:0; left:0; right:0; z-index:2; line-height:0;
+    opacity:.9;
+  }
+  .skyline svg{ width:100%; height:auto; display:block;}
+
+  .scroll-cue{
+    position:absolute; bottom:26px; left:48px; z-index:3; color:#9fb0b8; font-size:11px;
+    letter-spacing:2px; text-transform:uppercase; display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue .stem{ width:1px; height:34px; background:linear-gradient(#D4AF37, transparent); }
+
+  /* SECTION generic */
+  section{ padding:110px 48px; max-width:1280px; margin:0 auto; }
+  .section-head{ display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:56px; gap:30px; flex-wrap:wrap;}
+  .section-tag{ color:var(--emerald); font-size:12.5px; letter-spacing:2.5px; text-transform:uppercase; font-weight:600; margin-bottom:14px; display:block;}
+  .section-head h2{ font-size:clamp(28px,3.4vw,42px); font-weight:600; color:var(--navy-deep); max-width:600px; line-height:1.15;}
+  .section-head p{ max-width:340px; color:#5b6670; font-size:14.5px; line-height:1.6;}
+
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{ opacity:1; transform:translateY(0);}
+
+  /* OVERVIEW */
+  .overview-grid{ display:grid; grid-template-columns:.9fr 1.1fr; gap:70px; align-items:center;}
+  .overview-media{
+    aspect-ratio:4/5; border-radius:6px; overflow:hidden; position:relative;
+    background:linear-gradient(135deg,#0a2b40,#0F9D58 180%);
+  }
+  .overview-media img{ width:100%; height:100%; object-fit:cover; }
+  .overview-media .cap{
+    position:absolute; bottom:0; left:0; right:0; padding:22px 24px;
+    background:linear-gradient(180deg, transparent, rgba(4,18,30,0.85));
+    color:#fff; font-size:13px;
+  }
+  .pillars{ display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:36px;}
+  .pillar{ border-top:2px solid var(--gold); padding-top:14px;}
+  .pillar h4{ font-family:'Fraunces',serif; font-size:17px; margin-bottom:8px; color:var(--navy-deep);}
+  .pillar p{ font-size:13.5px; color:#5b6670; line-height:1.55;}
+  .overview-copy p.lead{ font-size:18px; line-height:1.7; color:#2c343a; margin-bottom:10px;}
+
+  /* PORTFOLIO - horizontal scroll */
+  .portfolio-scroll{
+    display:flex; gap:22px; overflow-x:auto; padding-bottom:20px; scroll-snap-type:x mandatory;
+    -ms-overflow-style:none; scrollbar-width:none;
+  }
+  .portfolio-scroll::-webkit-scrollbar{ display:none; }
+  .prop-card{
+    flex:0 0 340px; scroll-snap-align:start; border-radius:6px; overflow:hidden;
+    background:#fff; box-shadow:0 10px 30px rgba(8,32,50,0.08); position:relative;
+    transition:transform .35s ease, box-shadow .35s ease;
+  }
+  .prop-card:hover{ transform:translateY(-6px); box-shadow:0 20px 44px rgba(8,32,50,0.14);}
+  .prop-img{ height:230px; position:relative; overflow:hidden;}
+  .prop-img img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .prop-card:hover .prop-img img{ transform:scale(1.06);}
+  .badge{
+    position:absolute; top:14px; left:14px; background:var(--emerald); color:#fff;
+    font-size:10.5px; letter-spacing:1px; text-transform:uppercase; font-weight:600;
+    padding:5px 10px; border-radius:2px;
+  }
+  .badge.gold{ background:var(--gold); color:var(--navy-deep); }
+  .prop-body{ padding:20px 22px 24px;}
+  .prop-body .loc{ font-size:11.5px; letter-spacing:1px; text-transform:uppercase; color:#8a96a0; margin-bottom:6px;}
+  .prop-body h4{ font-family:'Fraunces',serif; font-size:19px; margin-bottom:10px; color:var(--navy-deep);}
+  .prop-meta{ display:flex; gap:16px; font-size:12.5px; color:#5b6670; margin-bottom:14px;}
+  .prop-price{ display:flex; justify-content:space-between; align-items:center; border-top:1px solid #eee; padding-top:14px;}
+  .prop-price .amt{ font-family:'Fraunces',serif; font-weight:600; color:var(--navy-deep); font-size:16px;}
+  .prop-price a{ font-size:12.5px; font-weight:600; color:var(--emerald); }
+  .scroll-hint{ text-align:right; font-size:12px; color:#8a96a0; margin-top:14px;}
+
+  /* SERVICES */
+  .services-bg{ background:var(--navy-deep); color:#fff; }
+  .services-bg .section-tag{ color:var(--gold-soft); }
+  .services-bg .section-head h2{ color:#fff; }
+  .services-bg .section-head p{ color:#a9b6bd; }
+  .service-list{ border-top:1px solid rgba(255,255,255,.12);}
+  .service-row{
+    display:grid; grid-template-columns:70px 1fr 1fr 30px; align-items:center; gap:24px;
+    padding:26px 0; border-bottom:1px solid rgba(255,255,255,.12); cursor:default;
+    transition:background .3s ease;
+  }
+  .service-row:hover{ background:rgba(255,255,255,.03); }
+  .service-row .idx{ font-family:'Fraunces',serif; color:var(--gold); font-size:15px;}
+  .service-row h4{ font-family:'Fraunces',serif; font-size:20px; font-weight:500;}
+  .service-row p{ font-size:13.5px; color:#9fadb4; line-height:1.55;}
+  .service-row .arrow{ color:var(--gold); font-size:18px; transition:transform .3s ease;}
+  .service-row:hover .arrow{ transform:translateX(6px); }
+  @media(max-width:800px){ .service-row{ grid-template-columns:40px 1fr; } .service-row p{grid-column:2; } .service-row .arrow{display:none;} }
+
+  /* PROJECTS */
+  .projects-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .project-card{ position:relative; border-radius:6px; overflow:hidden; aspect-ratio:3/4;}
+  .project-card img{ width:100%; height:100%; object-fit:cover; transition:transform .5s ease;}
+  .project-card:hover img{ transform:scale(1.07);}
+  .project-overlay{
+    position:absolute; inset:0; background:linear-gradient(180deg, transparent 40%, rgba(4,18,30,0.92));
+    display:flex; flex-direction:column; justify-content:flex-end; padding:24px; color:#fff;
+  }
+  .project-overlay .status{ font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold-soft); margin-bottom:8px; font-weight:600;}
+  .project-overlay h4{ font-family:'Fraunces',serif; font-size:21px; margin-bottom:10px;}
+  .progress-bar{ height:4px; background:rgba(255,255,255,.2); border-radius:2px; overflow:hidden; margin-bottom:8px;}
+  .progress-fill{ height:100%; background:var(--emerald); }
+  @media(max-width:900px){ .projects-grid{ grid-template-columns:1fr 1fr;} }
+  @media(max-width:600px){ .projects-grid{ grid-template-columns:1fr;} }
+
+  /* TESTIMONIALS */
+  .test-wrap{ background:var(--ivory); }
+  .test-track{ display:flex; gap:24px; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:10px;}
+  .test-card{
+    flex:0 0 380px; scroll-snap-align:start; background:#fff; border-radius:6px; padding:32px;
+    border:1px solid #eee; box-shadow:0 8px 24px rgba(8,32,50,0.05);
+  }
+  .stars{ color:var(--gold); font-size:15px; margin-bottom:16px; letter-spacing:2px;}
+  .test-card p.quote{ font-size:15px; line-height:1.7; color:#2c343a; margin-bottom:22px;}
+  .test-person{ display:flex; align-items:center; gap:12px;}
+  .test-avatar{ width:42px; height:42px; border-radius:50%; object-fit:cover;}
+  .test-person strong{ font-size:14px; display:block; color:var(--navy-deep);}
+  .test-person span{ font-size:12px; color:#8a96a0;}
+
+  /* INVESTMENT CTA */
+  .invest-cta{
+    background:linear-gradient(120deg, var(--navy-deep), #0d3550 60%, var(--emerald));
+    border-radius:10px; padding:70px 60px; color:#fff; display:flex; justify-content:space-between;
+    align-items:center; gap:40px; flex-wrap:wrap; position:relative; overflow:hidden;
+  }
+  .invest-cta::after{
+    content:''; position:absolute; right:-60px; top:-60px; width:260px; height:260px;
+    border:1px solid rgba(212,175,55,0.35); border-radius:50%;
+  }
+  .invest-cta h3{ font-size:clamp(24px,3vw,34px); max-width:480px; line-height:1.2; position:relative; z-index:2;}
+  .invest-cta .row{ display:flex; gap:14px; position:relative; z-index:2;}
+
+  /* FOOTER */
+  footer{ background:var(--navy-deep); color:#c7d0d6; padding:80px 48px 30px;}
+  .footer-grid{ max-width:1280px; margin:0 auto; display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr 1fr; gap:40px; padding-bottom:50px; border-bottom:1px solid rgba(255,255,255,.1);}
+  .footer-grid h5{ color:#fff; font-size:13px; letter-spacing:1px; text-transform:uppercase; margin-bottom:18px;}
+  .footer-grid ul{ list-style:none; display:flex; flex-direction:column; gap:11px;}
+  .footer-grid a{ font-size:13.5px; color:#a9b6bd; }
+  .footer-grid a:hover{ color:var(--gold-soft); }
+  .footer-bottom{ max-width:1280px; margin:24px auto 0; display:flex; justify-content:space-between; font-size:12.5px; color:#7a8890; flex-wrap:wrap; gap:10px;}
+
+  @media(max-width:900px){
+    section{padding:80px 24px;}
+    .hero{padding:120px 24px 0;}
+    .hero-grid{ grid-template-columns:1fr;}
+    .overview-grid{ grid-template-columns:1fr;}
+    .projects-grid{ }
+    .footer-grid{ grid-template-columns:1fr 1fr;}
+  }
+
+  /* Floating widgets */
+  .float-wa{
+    position:fixed; bottom:26px; right:26px; z-index:800; width:58px; height:58px;
+    border-radius:50%; background:#25D366; display:flex; align-items:center; justify-content:center;
+    box-shadow:0 8px 22px rgba(0,0,0,0.25); cursor:pointer; transition:transform .25s ease;
+  }
+  .float-wa:hover{ transform:scale(1.08); }
+
+  .chat-bubble{
+    position:fixed; bottom:98px; right:26px; z-index:800; width:300px; background:#fff;
+    border-radius:10px; box-shadow:0 16px 40px rgba(0,0,0,0.18); overflow:hidden;
+    opacity:0; transform:translateY(12px) scale(.97); pointer-events:none; transition:all .28s ease;
+  }
+  .chat-bubble.open{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto;}
+  .chat-head{ background:var(--navy-deep); color:#fff; padding:16px 18px; display:flex; align-items:center; gap:10px;}
+  .chat-head .dot{ width:8px; height:8px; border-radius:50%; background:var(--emerald);}
+  .chat-head strong{ font-size:13.5px;}
+  .chat-head span{ font-size:11px; color:#a9b6bd; display:block;}
+  .chat-body{ padding:16px 18px; font-size:13px; color:#3a444a; line-height:1.6;}
+  .chat-msg{ background:#f2f0ea; padding:10px 12px; border-radius:8px; margin-bottom:10px;}
+  .chat-actions{ display:flex; gap:8px; padding:0 18px 18px;}
+  .chat-actions button{ flex:1; padding:9px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer;}
+  .chat-actions .primary{ background:#25D366; color:#fff;}
+  .chat-actions .secondary{ background:#eee; color:#333;}
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<nav id="nav">
+  <div class="logo">INFRA<span>NOVA</span> GLOBAL</div>
+  <div class="navlinks">
+    <a href="#overview">Company</a>
+    <a href="#portfolio">Properties</a>
+    <a href="#services">Services</a>
+    <a href="#projects">Projects</a>
+    <a href="#invest">Investment</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="#invest">Book Inspection</a>
+    <a class="btn btn-gold" href="#contact">Talk to an Advisor</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Premium Real Estate Development · Nigeria &amp; West Africa</span>
+      <h1>Building Tomorrow's <em>Communities</em> Today</h1>
+      <p class="sub">Infranova Global designs, finances, and delivers residential, commercial, and smart-city developments across Nigeria — engineered for lasting value and everyday life.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-gold" href="#portfolio">Explore Properties</a>
+        <a class="btn btn-ghost" href="#invest">Book Inspection</a>
+        <a class="btn btn-ghost" href="#contact">Talk to an Advisor</a>
+      </div>
+    </div>
+    <div class="stat-stack">
+      <div class="stat-card"><div class="num">18+</div><div class="lbl">Years delivering developments across Nigeria</div></div>
+      <div class="stat-card"><div class="num">₦140bn</div><div class="lbl">In completed &amp; ongoing project value</div></div>
+      <div class="stat-card"><div class="num">32</div><div class="lbl">Active developments, from Lagos to Abuja</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><span class="stem"></span> Scroll</div>
+  <div class="skyline">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,160 L0,120 L40,120 L40,90 L70,90 L70,60 L100,60 L100,110 L140,110 L140,70 L180,70 L180,130 L230,130 L230,50 L260,50 L260,20 L290,20 L290,50 L320,50 L320,100 L370,100 L370,80 L410,80 L410,120 L460,120 L460,40 L500,40 L500,10 L530,10 L530,40 L560,40 L560,90 L610,90 L610,60 L650,60 L650,130 L700,130 L700,30 L740,30 L740,70 L780,70 L780,110 L830,110 L830,50 L860,50 L860,20 L900,20 L900,50 L940,50 L940,100 L990,100 L990,60 L1030,60 L1030,120 L1080,120 L1080,40 L1120,40 L1120,90 L1160,90 L1160,130 L1210,130 L1210,70 L1250,70 L1250,110 L1300,110 L1300,50 L1340,50 L1340,90 L1380,90 L1380,120 L1440,120 L1440,160 Z" fill="#04121e" opacity="0.7"/>
+      <path d="M0,160 L0,140 L60,140 L60,110 L110,110 L110,145 L160,145 L160,100 L200,100 L200,60 L230,60 L230,30 L250,30 L250,60 L280,60 L280,120 L330,120 L330,90 L380,90 L380,150 L430,150 L430,50 L470,50 L470,80 L510,80 L510,130 L560,130 L560,70 L600,70 L600,20 L620,20 L620,70 L660,70 L660,110 L710,110 L710,140 L760,140 L760,60 L800,60 L800,100 L850,100 L850,40 L890,40 L890,80 L940,80 L940,130 L990,130 L990,90 L1040,90 L1040,140 L1090,140 L1090,60 L1130,60 L1130,20 L1150,20 L1150,60 L1190,60 L1190,110 L1240,110 L1240,150 L1290,150 L1290,80 L1340,80 L1340,120 L1390,120 L1390,140 L1440,140 L1440,160 Z" fill="#082032"/>
+    </svg>
+  </div>
+</header>
+
+<!-- COMPANY OVERVIEW -->
+<section id="overview" class="reveal">
+  <div class="overview-grid">
+    <div class="overview-media">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80" alt="Modern estate development">
+      <div class="cap">Meridian Heights — Lekki, Lagos</div>
+    </div>
+    <div class="overview-copy">
+      <span class="section-tag">Who We Are</span>
+      <h2 style="margin-bottom:20px;">A development company building for how Nigeria actually lives.</h2>
+      <p class="lead">Infranova Global was founded to close the gap between global design standards and the realities of the Nigerian market — durable construction, transparent pricing, and communities designed around family, commerce, and growth.</p>
+      <div class="pillars">
+        <div class="pillar"><h4>Our Mission</h4><p>Deliver homes and developments that hold their value and improve daily life for the families and businesses inside them.</p></div>
+        <div class="pillar"><h4>Our Vision</h4><p>To be West Africa's most trusted name in premium, sustainable urban development by 2030.</p></div>
+        <div class="pillar"><h4>Core Values</h4><p>Integrity in every contract, craftsmanship in every build, and clarity in every conversation with a client.</p></div>
+        <div class="pillar"><h4>Why Choose Us</h4><p>In-house architecture, construction, and after-sales facility management — one accountable team, start to finish.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio" class="reveal">
+  <div class="section-head">
+    <div>
+      <span class="section-tag">Property Portfolio</span>
+      <h2>Homes and developments ready to view.</h2>
+    </div>
+    <p>Filter by location, price, or status — from move-in-ready residences to pre-launch investment opportunities.</p>
+  </div>
+  <div class="portfolio-scroll">
+    <div class="prop-card">
+      <div class="prop-img"><span class="badge">For Sale</span><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80" alt="Villa"></div>
+      <div class="prop-body">
+        <div class="loc">Banana Island, Lagos</div>
+        <h4>The Obsidian Villas</h4>
+        <div class="prop-meta"><span>5 Beds</span><span>6 Baths</span><span>720 m²</span></div>
+        <div class="prop-price"><span class="amt">₦850,000,000</span><a href="#contact">Enquire →</a></div>
+      </div>
+    </div>
+    <div class="prop-card">
+      <div class="prop-img"><span class="badge gold">Featured</span><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600&q=80" alt="Apartments"></div>
+      <div class="prop-body">
+        <div class="loc">Guzape, Abuja</div>
+        <h4>Meridian Court Apartments</h4>
+        <div class="prop-meta"><span>3 Beds</span><span>4 Baths</span><span>240 m²</span></div>
+        <div class="prop-price"><span class="amt">₦180,000,000</span><a href="#contact">Enquire →</a></div>
+      </div>
+    </div>
+    <div class="prop-card">
+      <div class="prop-img"><span class="badge" style="background:#8a96a0;">Coming Soon</span><img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80" alt="Estate"></div>
+      <div class="prop-body">
+        <div class="loc">Epe, Lagos</div>
+        <h4>Nova Smart Estate</h4>
+        <div class="prop-meta"><span>Land Banking</span><span>from 450 m²</span></div>
+        <div class="prop-price"><span class="amt">from ₦25,000,000</span><a href="#invest">Invest →</a></div>
+      </div>
+    </div>
+    <div class="prop-card">
+      <div class="prop-img"><span class="badge">For Sale</span><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Commercial"></div>
+      <div class="prop-body">
+        <div class="loc">Victoria Island, Lagos</div>
+        <h4>Infranova Business Tower</h4>
+        <div class="prop-meta"><span>Commercial</span><span>2,100 m²</span></div>
+        <div class="prop-price"><span class="amt">₦1,200,000,000</span><a href="#contact">Enquire →</a></div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint">Scroll for more →</div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="services-bg reveal">
+  <div class="section-head">
+    <div>
+      <span class="section-tag">What We Do</span>
+      <h2>End-to-end development, under one roof.</h2>
+    </div>
+    <p>From land acquisition to facility management — every stage handled in-house, for full accountability.</p>
+  </div>
+  <div class="service-list">
+    <div class="service-row"><span class="idx">01</span><h4>Real Estate Development</h4><p>Residential, commercial, and mixed-use projects from concept to completion.</p><span class="arrow">→</span></div>
+    <div class="service-row"><span class="idx">02</span><h4>Construction &amp; Architecture</h4><p>In-house engineering and design teams overseeing every build to international standard.</p><span class="arrow">→</span></div>
+    <div class="service-row"><span class="idx">03</span><h4>Property &amp; Facility Management</h4><p>Long-term upkeep, security, and tenant services for owners and investors alike.</p><span class="arrow">→</span></div>
+    <div class="service-row"><span class="idx">04</span><h4>Investment Advisory &amp; Joint Ventures</h4><p>Structuring land banking, co-development, and institutional partnership opportunities.</p><span class="arrow">→</span></div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="reveal">
+  <div class="section-head">
+    <div>
+      <span class="section-tag">Projects</span>
+      <h2>Ongoing developments across Nigeria.</h2>
+    </div>
+    <p>Track construction progress, completion percentage, and investment windows.</p>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=500&q=80" alt="Meridian Heights">
+      <div class="project-overlay">
+        <div class="status">Ongoing · Lekki</div>
+        <h4>Meridian Heights</h4>
+        <div class="progress-bar"><div class="progress-fill" style="width:68%"></div></div>
+        <div style="font-size:12px;color:#c7d0d6;">68% complete · Est. delivery Q3 2027</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1592928302636-c83cf1e1c887?w=500&q=80" alt="Nova Smart Estate">
+      <div class="project-overlay">
+        <div class="status">Upcoming · Epe</div>
+        <h4>Nova Smart Estate</h4>
+        <div class="progress-bar"><div class="progress-fill" style="width:12%"></div></div>
+        <div style="font-size:12px;color:#c7d0d6;">Site works begun · Launching 2026</div>
+      </div>
+    </div>
+    <div class="project-card">
+      <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&q=80" alt="Business Tower">
+      <div class="project-overlay">
+        <div class="status">Completed · Victoria Island</div>
+        <h4>Infranova Business Tower</h4>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+        <div style="font-size:12px;color:#c7d0d6;">Delivered 2025 · Fully let</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="test-wrap reveal">
+  <div class="section-head">
+    <div>
+      <span class="section-tag">Client Stories</span>
+      <h2>Trusted by homeowners and investors.</h2>
+    </div>
+  </div>
+  <div class="test-track">
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"The handover was exactly as promised — same finishes we saw in the model unit, no surprises. That alone made the whole process worth it."</p>
+      <div class="test-person">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=100&q=80" alt="">
+        <div><strong>Adaeze O.</strong><span>Homeowner, Meridian Court</span></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Our land banking allocation has already appreciated well ahead of projections, and the quarterly updates keep us fully informed."</p>
+      <div class="test-person">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&q=80" alt="">
+        <div><strong>Tunde B.</strong><span>Investor, Nova Smart Estate</span></div>
+      </div>
+    </div>
+    <div class="test-card">
+      <div class="stars">★★★★★</div>
+      <p class="quote">"Infranova managed our commercial fit-out and leasing end-to-end. Full occupancy within four months of delivery."</p>
+      <div class="test-person">
+        <img class="test-avatar" src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=100&q=80" alt="">
+        <div><strong>Grace N.</strong><span>Facilities Director, Client Firm</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INVESTMENT CTA -->
+<section id="invest" class="reveal">
+  <div class="invest-cta">
+    <h3>See what a land banking allocation at Nova Smart Estate could be worth in five years.</h3>
+    <div class="row">
+      <a class="btn btn-gold" href="#contact">Run the Numbers</a>
+      <a class="btn btn-ghost" href="#contact">Talk to an Advisor</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER / CONTACT -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:16px;">INFRA<span>NOVA</span> GLOBAL</div>
+      <p style="font-size:13.5px; color:#a9b6bd; line-height:1.7; max-width:280px;">Premium real estate development, property investment, and smart-city communities across Nigeria.</p>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul><li><a href="#overview">About Us</a></li><li><a href="#">Careers</a></li><li><a href="#">News &amp; Blog</a></li><li><a href="#">Media Center</a></li></ul>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <ul><li><a href="#portfolio">Properties</a></li><li><a href="#projects">Projects</a></li><li><a href="#invest">Investment</a></li><li><a href="#services">Services</a></li></ul>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms &amp; Conditions</a></li><li><a href="#">Cookie Policy</a></li></ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li style="color:#a9b6bd;">Victoria Island, Lagos</li>
+        <li style="color:#a9b6bd;">+234 800 000 0000</li>
+        <li style="color:#a9b6bd;">hello@infranovaglobal.com</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Infranova Global. All rights reserved.</span>
+    <span>Building Tomorrow's Communities Today</span>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<div class="float-wa" id="waBtn" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.95 9.95 0 0012.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.1c-1.6 0-3.1-.44-4.4-1.2l-.32-.19-3.12.82.83-3.04-.2-.32a8.1 8.1 0 01-1.24-4.27c0-4.48 3.65-8.13 8.13-8.13s8.13 3.65 8.13 8.13-3.65 8.2-8.01 8.2z"/></svg>
+</div>
+
+<!-- Chat widget (Infranova Assistant) -->
+<div class="chat-bubble" id="chatBubble">
+  <div class="chat-head"><span class="dot"></span><div><strong>Infranova Assistant</strong><span>Usually replies in a few minutes</span></div></div>
+  <div class="chat-body">
+    <div class="chat-msg">Hi! I'm the Infranova Assistant. Ask me about a property, an inspection booking, or investment options.</div>
+  </div>
+  <div class="chat-actions">
+    <button class="secondary" onclick="document.getElementById('chatBubble').classList.remove('open')">Close</button>
+    <button class="primary" onclick="window.open('https://wa.me/2348000000000','_blank')">Continue on WhatsApp</button>
+  </div>
+</div>
+
+<script>
+  // scroll progress + nav state
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('nav').classList.toggle('scrolled', h.scrollTop > 40);
+  });
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // floating widgets
+  document.getElementById('waBtn').addEventListener('click', ()=>{
+    document.getElementById('chatBubble').classList.toggle('open');
+  });
+</script>
+
+</body>
+</html>
