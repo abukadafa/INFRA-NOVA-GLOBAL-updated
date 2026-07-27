@@ -280,6 +280,80 @@
   .chat-actions button{ flex:1; padding:9px; border-radius:6px; border:none; font-size:12px; font-weight:600; cursor:pointer;}
   .chat-actions .primary{ background:#25D366; color:#fff;}
   .chat-actions .secondary{ background:#eee; color:#333;}
+
+  /* MEDIA SHOWCASE styles */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  .showcase-card {
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(8,32,50,0.06);
+    border: 1px solid rgba(212,175,55,0.15);
+    display: flex;
+    flex-direction: column;
+  }
+  .video-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    max-height: 550px;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-container video, .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    object-fit: cover;
+  }
+  .video-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(8,32,50,0.85);
+    color: var(--gold-soft);
+    padding: 5px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    z-index: 2;
+    border: 1px solid var(--gold);
+  }
+  .video-badge.live {
+    border-color: var(--emerald);
+    color: #fff;
+    background: rgba(15,157,88,0.85);
+  }
+  .showcase-body {
+    padding: 24px;
+  }
+  .showcase-body h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 21px;
+    color: var(--navy-deep);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .showcase-body p {
+    font-size: 14px;
+    color: #5b6670;
+    line-height: 1.6;
+  }
+  @media(max-width:900px){
+    .showcase-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 </head>
 <body>
@@ -310,7 +384,7 @@
       <h1>Building Tomorrow's <em>Communities</em> Today</h1>
       <p class="sub">Infranova Global designs, finances, and delivers residential, commercial, and smart-city developments across Nigeria — engineered for lasting value and everyday life.</p>
       <div class="hero-ctas">
-        <a class="btn btn-gold" href="#portfolio">Explore Properties</a>
+        <a class="btn btn-gold" href="properties.html">Explore Properties</a>
         <a class="btn btn-ghost" href="#invest">Book Inspection</a>
         <a class="btn btn-ghost" href="#contact">Talk to an Advisor</a>
       </div>
@@ -351,6 +425,39 @@
   </div>
 </section>
 
+<!-- MEDIA SHOWCASE (DRONE & CONSTRUCTION) -->
+<section id="showcase" class="reveal">
+  <div class="section-head">
+    <div>
+      <span class="section-tag">Interactive Media</span>
+      <h2>Experience our developments in motion.</h2>
+    </div>
+    <p>Watch aerial flyovers of completed estates and track progress on our active construction sites.</p>
+  </div>
+  <div class="showcase-grid">
+    <div class="showcase-card">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/AFMV3dtCgyo?autoplay=1&mute=1&loop=1&playlist=AFMV3dtCgyo&controls=0&modestbranding=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="video-badge">Drone Flyover</div>
+      </div>
+      <div class="showcase-body">
+        <h4>Flagship Drone View</h4>
+        <p>Take an aerial tour of our waterfront land banking projects and finished luxury estates in Lagos and Abuja.</p>
+      </div>
+    </div>
+    <div class="showcase-card">
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/QY2BvSzqzwY?autoplay=1&mute=1&loop=1&playlist=QY2BvSzqzwY&controls=0&modestbranding=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <div class="video-badge live">On-Site Progress</div>
+      </div>
+      <div class="showcase-body">
+        <h4>Meridian Heights Construction</h4>
+        <p>Live progress from our active construction site. Currently 68% complete, on schedule for Q3 2027 delivery.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- PORTFOLIO -->
 <section id="portfolio" class="reveal">
   <div class="section-head">
@@ -367,7 +474,7 @@
         <div class="loc">Banana Island, Lagos</div>
         <h4>The Obsidian Villas</h4>
         <div class="prop-meta"><span>5 Beds</span><span>6 Baths</span><span>720 m²</span></div>
-        <div class="prop-price"><span class="amt">₦850,000,000</span><a href="#contact">Enquire →</a></div>
+        <div class="prop-price"><span class="amt">₦850,000,000</span><a href="property-details.html?id=obsidian-villas">Enquire →</a></div>
       </div>
     </div>
     <div class="prop-card">
@@ -376,7 +483,7 @@
         <div class="loc">Guzape, Abuja</div>
         <h4>Meridian Court Apartments</h4>
         <div class="prop-meta"><span>3 Beds</span><span>4 Baths</span><span>240 m²</span></div>
-        <div class="prop-price"><span class="amt">₦180,000,000</span><a href="#contact">Enquire →</a></div>
+        <div class="prop-price"><span class="amt">₦180,000,000</span><a href="property-details.html?id=meridian-court">Enquire →</a></div>
       </div>
     </div>
     <div class="prop-card">
@@ -385,7 +492,7 @@
         <div class="loc">Epe, Lagos</div>
         <h4>Nova Smart Estate</h4>
         <div class="prop-meta"><span>Land Banking</span><span>from 450 m²</span></div>
-        <div class="prop-price"><span class="amt">from ₦25,000,000</span><a href="#invest">Invest →</a></div>
+        <div class="prop-price"><span class="amt">from ₦25,000,000</span><a href="property-details.html?id=nova-smart-estate">Invest →</a></div>
       </div>
     </div>
     <div class="prop-card">
@@ -394,7 +501,7 @@
         <div class="loc">Victoria Island, Lagos</div>
         <h4>Infranova Business Tower</h4>
         <div class="prop-meta"><span>Commercial</span><span>2,100 m²</span></div>
-        <div class="prop-price"><span class="amt">₦1,200,000,000</span><a href="#contact">Enquire →</a></div>
+        <div class="prop-price"><span class="amt">₦1,200,000,000</span><a href="property-details.html?id=infranova-business-tower">Enquire →</a></div>
       </div>
     </div>
   </div>
@@ -518,7 +625,7 @@
     </div>
     <div>
       <h5>Explore</h5>
-      <ul><li><a href="#portfolio">Properties</a></li><li><a href="#projects">Projects</a></li><li><a href="#invest">Investment</a></li><li><a href="#services">Services</a></li></ul>
+      <ul><li><a href="properties.html">Properties</a></li><li><a href="#projects">Projects</a></li><li><a href="#invest">Investment</a></li><li><a href="#services">Services</a></li></ul>
     </div>
     <div>
       <h5>Legal</h5>

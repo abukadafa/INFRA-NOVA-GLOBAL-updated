@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Property Details — Infranova Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<style>
+  /* Detail Page Layout */
+  .details-container {
+    max-width: 1280px;
+    margin: 120px auto 80px;
+    padding: 0 48px;
+    display: grid;
+    grid-template-columns: 1.8fr 1.2fr;
+    gap: 48px;
+  }
+
+  /* Breadcrumbs */
+  .breadcrumbs {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: -20px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--gold);
+  }
+  .breadcrumbs span {
+    margin: 0 8px;
+    color: #ccc;
+  }
+
+  /* Image Gallery */
+  .gallery-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .main-image-container {
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #eaeaea;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+  .main-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+  .thumbnails-container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+  .thumbnail {
+    width: 100px;
+    aspect-ratio: 4/3;
+    border-radius: 2px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.6;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .thumbnail:hover, .thumbnail.active {
+    opacity: 1;
+    border-color: var(--gold);
+  }
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Left Column Content */
+  .property-header {
+    margin-top: 24px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 24px;
+  }
+  .property-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .property-title-section h1 {
+    font-size: clamp(24px, 4vw, 36px);
+    color: var(--navy-deep);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .property-location {
+    font-size: 14px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .price-tag {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(22px, 3.5vw, 30px);
+    color: var(--emerald);
+    font-weight: 700;
+    text-align: right;
+  }
+  .price-sub {
+    font-size: 12px;
+    color: var(--gray-dark);
+    display: block;
+    text-align: right;
+  }
+
+  /* Badges & Meta specs */
+  .details-meta-row {
+    display: flex;
+    gap: 24px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+  }
+  .meta-badge {
+    background: #fff;
+    border: 1px solid #eee;
+    padding: 10px 16px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--navy-deep);
+    font-weight: 500;
+  }
+  .meta-badge .icon {
+    font-size: 16px;
+  }
+
+  /* Description & Details Sections */
+  .details-section {
+    margin: 36px 0;
+  }
+  .details-section h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--navy-deep);
+    margin-bottom: 16px;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+  }
+  .description-text {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .description-text p {
+    margin-bottom: 16px;
+  }
+
+  /* Amenities Grid */
+  .amenities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .amenity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #444;
+  }
+  .amenity-item svg {
+    color: var(--emerald);
+    flex-shrink: 0;
+  }
+
+  /* Specifications Table */
+  .specs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+  .specs-table tr {
+    border-bottom: 1px solid #eee;
+  }
+  .specs-table td {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .specs-table td.label {
+    font-weight: 600;
+    color: var(--navy-deep);
+    width: 40%;
+  }
+  .specs-table td.value {
+    color: var(--text-muted);
+  }
+
+  /* Map Mockup */
+  .map-placeholder {
+    width: 100%;
+    height: 300px;
+    background-color: #e5e5f7;
+    opacity: 0.8;
+    background-image: radial-gradient(#d4af37 0.5px, #f7f4ee 0.5px);
+    background-size: 10px 10px;
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+  }
+  .map-card {
+    background: #fff;
+    padding: 16px 20px;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(8,32,50,0.15);
+    text-align: center;
+    z-index: 2;
+    border: 1px solid rgba(212,175,55,0.25);
+  }
+  .map-card h4 {
+    font-family: 'Fraunces', serif;
+    color: var(--navy-deep);
+    margin-bottom: 6px;
+  }
+  .map-card p {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  /* Right Column Sidebar */
+  .sidebar-box {
+    background: #fff;
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 4px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(8,32,50,0.05);
+    position: sticky;
+    top: 100px;
+    margin-bottom: 30px;
+  }
+  .sidebar-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    color: var(--navy-deep);
+    margin-bottom: 8px;
+  }
+  .sidebar-box p.subtitle {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Form controls */
+  .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .form-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: var(--navy-deep);
+  }
+  .form-input {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-size: 14px;
+    outline: none;
+    font-family: inherit;
+  }
+  .form-input:focus {
+    border-color: var(--gold);
+  }
+  .form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .btn-submit-booking {
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    padding: 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-submit-booking:hover {
+    background: var(--navy-deep);
+    color: #fff;
+  }
+
+  /* Advisor contact card */
+  .advisor-card {
+    background: var(--navy-deep);
+    color: #fff;
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .advisor-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--gold);
+  }
+  .advisor-info h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--gold-soft);
+    margin-bottom: 2px;
+  }
+  .advisor-info p {
+    font-size: 12px;
+    color: #a9b6bd;
+    margin-bottom: 8px;
+  }
+  .advisor-info a {
+    font-size: 12.5px;
+    color: var(--gold);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .advisor-info a:hover {
+    color: #fff;
+  }
+
+  /* Similar Properties Section */
+  .similar-section {
+    border-top: 1px solid #eee;
+    padding-top: 60px;
+    max-width: 1280px;
+    margin: 40px auto 80px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  .similar-section h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin-bottom: 32px;
+  }
+  .similar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  /* Fallback error display */
+  .error-display {
+    max-width: 600px;
+    margin: 180px auto 100px;
+    text-align: center;
+    padding: 40px;
+    background: #fff;
+    border: 1px solid rgba(212,175,55,0.2);
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(8,32,50,0.06);
+  }
+  .error-display h2 {
+    font-size: 28px;
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+  }
+  .error-display p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4,18,30,0.85);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-card {
+    background: #fff;
+    border-radius: 4px;
+    padding: 40px;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+    border: 2px solid var(--gold);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.open .modal-card {
+    transform: scale(1);
+  }
+  .modal-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(15,157,88,0.15);
+    color: var(--emerald);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 28px;
+  }
+  .modal-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--navy-deep);
+    margin-bottom: 12px;
+  }
+  .modal-card p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  /* Responsive details */
+  @media (max-width: 990px) {
+    .details-container {
+      grid-template-columns: 1fr;
+      padding: 0 24px;
+      gap: 36px;
+    }
+    .sidebar-box {
+      position: static;
+    }
+    .similar-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .similar-section {
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .property-header-top {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .price-tag, .price-sub {
+      text-align: left;
+    }
+    .similar-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a class="logo" href="index.html">INFRA<span>NOVA</span> GLOBAL</a>
+  <div class="navlinks">
+    <a href="index.html#overview">Company</a>
+    <a href="properties.html" style="color: var(--gold-soft);">Properties</a>
+    <a href="index.html#services">Services</a>
+    <a href="index.html#projects">Projects</a>
+    <a href="index.html#invest">Investment</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-ghost" href="index.html#invest">Book Inspection</a>
+    <a class="btn btn-gold" href="index.html#contact">Talk to an Advisor</a>
+  </div>
+</nav>
+
+<!-- MAIN CONTAINER -->
+<div id="page-content">
+  <!-- Dynamic JavaScript will load details here -->
+</div>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:16px;">INFRA<span>NOVA</span> GLOBAL</div>
+      <p style="font-size:13.5px; color:#a9b6bd; line-height:1.7; max-width:280px;">Premium real estate development, property investment, and smart-city communities across Nigeria.</p>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html#overview">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">News &amp; Blog</a></li>
+        <li><a href="#">Media Center</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#invest">Investment</a></li>
+        <li><a href="index.html#services">Services</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Cookie Policy</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li style="color:#a9b6bd;">Victoria Island, Lagos</li>
+        <li style="color:#a9b6bd;">+234 800 000 0000</li>
+        <li style="color:#a9b6bd;">hello@infranovaglobal.com</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Infranova Global. All rights reserved.</span>
+    <span>Building Tomorrow's Communities Today</span>
+  </div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal-card">
+    <div class="modal-icon">✓</div>
+    <h3>Inspection Scheduled</h3>
+    <p id="successModalText">Thank you! Your inspection request has been received. One of our Senior Advisors will reach out to you shortly to confirm details.</p>
+    <button class="btn btn-gold" style="width: 100%;" onclick="document.getElementById('successModal').classList.remove('open')">Close Window</button>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<div class="float-wa" id="waBtn" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.95 9.95 0 0012.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.1c-1.6 0-3.1-.44-4.4-1.2l-.32-.19-3.12.82.83-3.04-.2-.32a8.1 8.1 0 01-1.24-4.27c0-4.48 3.65-8.13 8.13-8.13s8.13 3.65 8.13 8.13-3.65 8.2-8.01 8.2z"/></svg>
+</div>
+
+<!-- Chat widget (Infranova Assistant) -->
+<div class="chat-bubble" id="chatBubble">
+  <div class="chat-head"><span class="dot"></span><div><strong>Infranova Assistant</strong><span>Usually replies in a few minutes</span></div></div>
+  <div class="chat-body">
+    <div class="chat-msg">Hi! I'm the Infranova Assistant. Ask me about a property, an inspection booking, or investment options.</div>
+  </div>
+  <div class="chat-actions">
+    <button class="secondary" onclick="document.getElementById('chatBubble').classList.remove('open')">Close</button>
+    <button class="primary" onclick="window.open('https://wa.me/2348000000000','_blank')">Continue on WhatsApp</button>
+  </div>
+</div>
+
+<!-- DATA AND SCRIPT LOAD -->
+<script src="js/properties-data.js"></script>
+<script>
+  // Page load logic
+  window.addEventListener('DOMContentLoaded', () => {
+    // Scroll progress line
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+      document.getElementById('nav').classList.toggle('scrolled', h.scrollTop > 40);
+    });
+
+    // Floating WhatsApp
+    document.getElementById('waBtn').addEventListener('click', ()=>{
+      document.getElementById('chatBubble').classList.toggle('open');
+    });
+
+    loadPropertyDetails();
+  });
+
+  // Extract ID and render
+  async function loadPropertyDetails() {
+    const contentContainer = document.getElementById('page-content');
+    
+    // Parse URL params
+    const params = new URLSearchParams(window.location.search);
+    const propertyId = params.get('id');
+
+    if (!propertyId) {
+      renderError(contentContainer, "Invalid Access", "No property ID was specified in the URL path. Please browse our properties catalog to select a residence.");
+      return;
+    }
+
+    let property = null;
+    try {
+      const res = await fetch(`http://localhost:5000/api/properties/${propertyId}`);
+      const json = await res.json();
+      if (json.success) {
+        property = json.data;
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch property details from API, falling back to mock file", err);
+      if (typeof propertiesData !== 'undefined') {
+        property = propertiesData.find(p => p.id === propertyId);
+      }
+    }
+
+    if (!property) {
+      renderError(contentContainer, "Property Not Found", `We couldn't find a listing matching ID "${propertyId}". It might have been sold or unlisted.`);
+      return;
+    }
+
+    // Build breadcrumbs
+    const crumbs = `
+      <div class="breadcrumbs">
+        <a href="index.html">Home</a><span>/</span>
+        <a href="properties.html">Properties</a><span>/</span>
+        <span style="color:var(--navy); font-weight:600;">${property.title}</span>
+      </div>
+    `;
+
+    // Build Gallery HTML
+    const mainImg = property.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80';
+    let thumbsHTML = '';
+    property.images.forEach((img, idx) => {
+      thumbsHTML += `
+        <div class="thumbnail ${idx === 0 ? 'active' : ''}" onclick="switchMainImage(this, '${img}')">
+          <img src="${img}" alt="${property.title} Thumbnail ${idx + 1}">
+        </div>
+      `;
+    });
+
+    const galleryHTML = `
+      <div class="gallery-wrapper">
+        <div class="main-image-container">
+          <img id="main-gallery-view" src="${mainImg}" alt="${property.title}">
+        </div>
+        <div class="thumbnails-container">
+          ${thumbsHTML}
+        </div>
+      </div>
+    `;
+
+    // Build Meta Badges
+    let metaBadgesHTML = '';
+    if (property.beds) {
+      metaBadgesHTML += `<div class="meta-badge"><span class="icon">🛏️</span> <strong>${property.beds}</strong> Bedrooms</div>`;
+    }
+    if (property.baths) {
+      metaBadgesHTML += `<div class="meta-badge"><span class="icon">🛁</span> <strong>${property.baths}</strong> Bathrooms</div>`;
+    }
+    if (property.area) {
+      metaBadgesHTML += `<div class="meta-badge"><span class="icon">📏</span> <strong>${property.area}</strong> m² Built Area</div>`;
+    }
+
+    // Build Description Paragraphs
+    const paragraphs = property.description.split('\n\n').map(p => `<p>${p}</p>`).join('');
+
+    // Build Amenities
+    let amenitiesHTML = '';
+    property.amenities.forEach(amenity => {
+      amenitiesHTML += `
+        <div class="amenity-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>${amenity}</span>
+        </div>
+      `;
+    });
+
+    // Build Specs Table
+    let specsHTML = '';
+    for (const [key, value] of Object.entries(property.specs)) {
+      specsHTML += `
+        <tr>
+          <td class="label">${key}</td>
+          <td class="value">${value}</td>
+        </tr>
+      `;
+    }
+
+    // Build Similar Properties
+    const similarProps = propertiesData
+      .filter(p => p.id !== property.id && (p.city === property.city || p.type === property.type))
+      .slice(0, 3);
+    
+    let similarHTML = '';
+    similarProps.forEach(sim => {
+      const simImg = sim.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80';
+      const badgeClass = sim.status === 'featured' ? 'badge gold' : (sim.status === 'coming-soon' ? 'badge coming-soon' : 'badge');
+      const badgeText = sim.status === 'featured' ? 'Featured' : (sim.status === 'coming-soon' ? 'Coming Soon' : (sim.status === 'for-rent' ? 'For Rent' : 'For Sale'));
+      
+      similarHTML += `
+        <div class="prop-card" style="box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #eee;">
+          <div class="prop-img" style="height:180px;">
+            <span class="${badgeClass}">${badgeText}</span>
+            <img src="${simImg}" alt="${sim.title}">
+          </div>
+          <div class="prop-body" style="padding:18px;">
+            <div class="loc" style="font-size:10px;">${sim.location}</div>
+            <h4 style="font-size:17px; margin-bottom:8px;">${sim.title}</h4>
+            <div class="prop-price" style="border-top: 1px solid #f2f2f2; padding-top:10px;">
+              <span class="amt" style="font-size:14.5px;">${sim.priceFormatted}</span>
+              <a href="property-details.html?id=${sim.id}" style="font-size:12px;">Details →</a>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    // Master structure injection
+    contentContainer.innerHTML = `
+      <div class="details-container">
+        ${crumbs}
+        
+        <!-- Left Column -->
+        <div>
+          ${galleryHTML}
+          
+          <div class="property-header">
+            <div class="property-header-top">
+              <div class="property-title-section">
+                <h1>${property.title}</h1>
+                <div class="property-location">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>${property.location}</span>
+                </div>
+              </div>
+              <div>
+                <div class="price-tag">${property.priceFormatted}</div>
+                <span class="price-sub">${property.status === 'for-rent' ? 'Subject to lease terms' : 'Outright Purchase'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-meta-row">
+            ${metaBadgesHTML}
+          </div>
+
+          <!-- Description Section -->
+          <div class="details-section">
+            <h3>Overview &amp; Design</h3>
+            <div class="description-text">
+              ${paragraphs}
+            </div>
+          </div>
+
+          <!-- Amenities Section -->
+          <div class="details-section">
+            <h3>Premium Amenities</h3>
+            <div class="amenities-grid">
+              ${amenitiesHTML}
+            </div>
+          </div>
+
+          <!-- Specifications Section -->
+          <div class="details-section">
+            <h3>Technical Specifications</h3>
+            <table class="specs-table">
+              <tbody>
+                ${specsHTML}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Location Map Section -->
+          <div class="details-section">
+            <h3>Location &amp; Accessibility</h3>
+            <div class="map-placeholder">
+              <div class="map-card">
+                <h4>${property.location}</h4>
+                <p>Private gated community access. Fully paved drainage.</p>
+                <a class="btn btn-gold" href="https://maps.google.com/?q=${encodeURIComponent(property.location)}" target="_blank" style="padding: 6px 12px; font-size:11px;">
+                  Open Google Maps
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column Sidebar -->
+        <div>
+          <div class="sidebar-box">
+            <h3>Schedule Inspection</h3>
+            <p class="subtitle">Book a private physical or virtual tour of this development with a senior Infranova advisor.</p>
+            
+            <form class="booking-form" onsubmit="handleBooking(event, '${property.title}')">
+              <div class="form-group">
+                <label for="booking-name">Full Name</label>
+                <input type="text" id="booking-name" class="form-input" required placeholder="e.g. Tunde Alabi">
+              </div>
+              <div class="form-group">
+                <label for="booking-email">Email Address</label>
+                <input type="email" id="booking-email" class="form-input" required placeholder="e.g. tunde@domain.com">
+              </div>
+              <div class="form-group">
+                <label for="booking-phone">Phone Number</label>
+                <input type="tel" id="booking-phone" class="form-input" required placeholder="e.g. +234 803 123 4567">
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label for="booking-date">Preferred Date</label>
+                  <input type="date" id="booking-date" class="form-input" required>
+                </div>
+                <div class="form-group">
+                  <label for="booking-time">Preferred Time</label>
+                  <input type="time" id="booking-time" class="form-input" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="booking-msg">Special Instructions</label>
+                <input type="text" id="booking-msg" class="form-input" placeholder="e.g. Requesting virtual tour over Zoom">
+              </div>
+              <button type="submit" class="btn-submit-booking">
+                Confirm Booking Request
+              </button>
+            </form>
+
+            <div class="advisor-card">
+              <img class="advisor-avatar" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=120&q=80" alt="Advisor Avatar">
+              <div class="advisor-info">
+                <h4>Abubakar K.</h4>
+                <p>Senior Investment Advisor</p>
+                <a href="https://wa.me/2348000000000" target="_blank">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right:3px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.29 1.977 13.81 .953 11.99.953c-5.441 0-9.866 4.372-9.87 9.802 0 1.814.49 3.59 1.42 5.122l-.95 3.47 3.556-.934z"/></svg>
+                  Chat on WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Similar properties block -->
+      ${similarProps.length > 0 ? `
+        <div class="similar-section">
+          <h2>Similar Developments</h2>
+          <div class="similar-grid">
+            ${similarHTML}
+          </div>
+        </div>
+      ` : ''}
+    `;
+
+    // Set today as min date for booking picker
+    const dateInput = document.getElementById('booking-date');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+    }
+  }
+
+  // Switch gallery view
+  function switchMainImage(thumbElement, imageUrl) {
+    // Remove active state from all thumbnails
+    document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+    // Add active to clicked thumbnail
+    thumbElement.classList.add('active');
+    
+    const mainView = document.getElementById('main-gallery-view');
+    if (mainView) {
+      mainView.style.opacity = '0';
+      setTimeout(() => {
+        mainView.src = imageUrl;
+        mainView.style.opacity = '1';
+      }, 150);
+    }
+  }
+
+  // Form submission handler communicating with the backend API
+  async function handleBooking(event, propertyTitle) {
+    event.preventDefault();
+    const name = document.getElementById('booking-name').value;
+    const email = document.getElementById('booking-email').value;
+    const phone = document.getElementById('booking-phone').value;
+    const date = document.getElementById('booking-date').value;
+    const time = document.getElementById('booking-time').value;
+    const message = document.getElementById('booking-msg').value;
+
+    try {
+      const res = await fetch('http://localhost:5000/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          propertyName: propertyTitle,
+          fullName: name,
+          email,
+          phone,
+          date,
+          time,
+          message
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        const modalText = document.getElementById('successModalText');
+        modalText.innerHTML = `Thank you, <strong>${name}</strong>! Your inspection request has been logged in the Infranova Database for <strong>${date}</strong> at <strong>${time}</strong>. Our advisors will contact you shortly.`;
+        const modal = document.getElementById('successModal');
+        modal.classList.add('open');
+        event.target.reset();
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (err) {
+      console.warn("Failed to save booking to backend API, falling back to local simulation", err);
+      const modalText = document.getElementById('successModalText');
+      modalText.innerHTML = `Thank you, <strong>${name}</strong>! Your inspection request for <strong>${propertyTitle}</strong> has been logged (simulated offline mode) for <strong>${date}</strong> at <strong>${time}</strong>.`;
+      const modal = document.getElementById('successModal');
+      modal.classList.add('open');
+      event.target.reset();
+    }
+  }
+
+  // Error rendering helper
+  function renderError(container, title, message) {
+    container.innerHTML = `
+      <div class="error-display">
+        <h2>${title}</h2>
+        <p>${message}</p>
+        <a class="btn btn-gold" href="properties.html">Back to Properties Catalog</a>
+      </div>
+    `;
+  }
+</script>
+
+</body>
+</html>
