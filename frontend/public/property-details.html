@@ -599,6 +599,11 @@
 <!-- DATA AND SCRIPT LOAD -->
 <script src="js/properties-data.js"></script>
 <script>
+  // Dynamic API Base URL configuration (Render/Railway backend placeholder)
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://your-production-backend-url.com'; // Replace with actual production backend URL
+
   // Page load logic
   window.addEventListener('DOMContentLoaded', () => {
     // Scroll progress line
@@ -632,7 +637,7 @@
 
     let property = null;
     try {
-      const res = await fetch(`http://localhost:5000/api/properties/${propertyId}`);
+      const res = await fetch(`${API_BASE}/api/properties/${propertyId}`);
       const json = await res.json();
       if (json.success) {
         property = json.data;
@@ -918,7 +923,7 @@
     const message = document.getElementById('booking-msg').value;
 
     try {
-      const res = await fetch('http://localhost:5000/api/bookings', {
+      const res = await fetch(`${API_BASE}/api/bookings`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
