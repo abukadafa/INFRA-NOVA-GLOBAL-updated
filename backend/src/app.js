@@ -4,6 +4,7 @@ const morgan = require('morgan');
 
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Mount Routes
 app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Base Route / Health Check
 app.get('/', (req, res) => {

@@ -107,3 +107,107 @@ exports.getPropertyById = async (req, res) => {
     });
   }
 };
+
+// @desc    Create new property
+// @route   POST /api/properties
+// @access  Private/Admin
+exports.createProperty = async (req, res) => {
+  try {
+    const propertyData = req.body;
+    
+    // Check if property id already exists
+    if (!propertyData.id) {
+      // Auto-generate id from title if not provided
+      propertyData.id = propertyData.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    }
+    
+    const existing = await Property.findOne({ id: propertyData.id });
+    if (existing) {
+      return res.status(400).json({
+        success: false,
+        message: `Property with ID "${propertyData.id}" already exists. Try changing the title slightly.`
+      });
+    }
+    
+    const property = await Property.create(propertyData);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Property created successfully',
+      data: property
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Error creating property',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Update an existing property
+// @route   PUT /api/properties/:id
+// @access  Private/Admin
+exports.updateProperty = async (req, res) => {
+  try {
+    let property = await Property.findOne({ id: req.params.id });
+    
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: `Property with ID "${req.params.id}" not found`
+      });
+    }
+    
+    // Update fields
+    property = await Property.findOneAndUpdate(
+      { id: req.params.id },
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    res.status(200).json({
+      success: true,
+      message: 'Property updated successfully',
+      data: property
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: 'Error updating property',
+      error: error.message
+    });
+  }
+};
+
+// @desc    Delete a property
+// @route   DELETE /api/properties/:id
+// @access  Private/Admin
+exports.deleteProperty = async (req, res) => {
+  try {
+    const property = await Property.findOne({ id: req.params.id });
+    
+    if (!property) {
+      return res.status(404).json({
+        success: false,
+        message: `Property with ID "${req.params.id}" not found`
+      });
+    }
+    
+    await Property.deleteOne({ id: req.params.id });
+    
+    res.status(200).json({
+      success: true,
+      message: `Property with ID "${req.params.id}" deleted successfully`
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting property',
+      error: error.message
+    });
+  }
+};

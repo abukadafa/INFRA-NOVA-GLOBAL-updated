@@ -318,6 +318,143 @@
       align-items: flex-start;
     }
   }
+
+  /* Admin Dashboard UI Modals */
+  .modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(46, 26, 13, 0.75);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .modal.open {
+    display: flex;
+  }
+  .modal-content {
+    background-color: #fbf8f3;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 10px 30px rgba(46,26,13,0.22);
+    border: 1px solid rgba(169,137,93,0.3);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #8a7d6a;
+    transition: color 0.2s ease;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: var(--brown-deep);
+  }
+  .modal h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--brown-deep);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brown-deep);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 10px 14px;
+    border-radius: 4px;
+    border: 1px solid #eee3d4;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--charcoal);
+    outline: none;
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width: 550px) {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+  .admin-bar {
+    background: #fff;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 24px;
+    margin: 30px auto;
+    max-width: 1280px;
+    width: calc(100% - 96px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+  @media(max-width: 600px) {
+    .admin-bar {
+      width: calc(100% - 40px);
+      margin: 20px auto;
+      padding: 14px 20px;
+    }
+  }
+  .admin-bar h4 {
+    font-family: 'Fraunces', serif;
+    color: var(--brown-deep);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-weight: 600;
+  }
+  .admin-bar h4::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #25D366;
+    display: inline-block;
+  }
+  .admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    border-top: 1px solid #eee3d4;
+    padding-top: 14px;
+  }
 </style>
 </head>
 <body>
@@ -408,6 +545,15 @@
   </div>
 </section>
 
+<!-- ADMIN BAR -->
+<div id="adminControlPanel" class="admin-bar" style="display: none;">
+  <h4>Admin Control Session Active</h4>
+  <div style="display: flex; gap: 12px;">
+    <button class="btn btn-gold" id="open-add-modal-btn">+ Add New Property</button>
+    <button class="btn btn-ghost" style="border-color: #d9534f; color: #d9534f;" id="admin-logout-btn">Logout</button>
+  </div>
+</div>
+
 <!-- CATALOG INFO & SORTING -->
 <div class="catalog-info">
   <div class="catalog-count" id="properties-count">Showing 0 properties</div>
@@ -457,21 +603,22 @@
       <ul>
         <li><a href="#">Privacy Policy</a></li>
         <li><a href="#">Terms &amp; Conditions</a></li>
-        <li><a href="#">Cookie Policy</a></li>
+        <li><a href="#" id="admin-login-trigger">Admin Login</a></li>
       </ul>
     </div>
     <div>
       <h5>Contact</h5>
       <ul>
-        <li style="color:#a9b6bd;">Victoria Island, Lagos</li>
-        <li style="color:#a9b6bd;">+234 800 000 0000</li>
-        <li style="color:#a9b6bd;">hello@infranovaglobal.com</li>
+        <li style="color:#a9b6bd;">Suite 01, Nusaiba Towers</li>
+        <li style="color:#a9b6bd;">Ahmadu Bello Way, Abuja</li>
+        <li><a href="tel:+2348181412668" style="color:#a9b6bd;">+234 818 141 2668</a></li>
+        <li><a href="mailto:infranovagc@gmail.com" style="color:#a9b6bd;">infranovagc@gmail.com</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Infranova Global. All rights reserved.</span>
-    <span>Building Tomorrow's Communities Today</span>
+    <span>© 2026 Infranova Global Concept Ltd. All rights reserved.</span>
+    <span>Building a Better Future with Excellence and Innovation.</span>
   </div>
 </footer>
 
@@ -489,6 +636,112 @@
   <div class="chat-actions">
     <button class="secondary" onclick="document.getElementById('chatBubble').classList.remove('open')">Close</button>
     <button class="primary" onclick="window.open('https://wa.me/2348000000000','_blank')">Continue on WhatsApp</button>
+  </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<div id="adminLoginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-login-modal-btn">&times;</span>
+    <h3>Admin Authentication</h3>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" required placeholder="Enter admin username">
+      </div>
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" required placeholder="Enter admin password">
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 15px;">Login</button>
+    </form>
+    <div id="loginError" style="color: #d9534f; font-size: 12.5px; margin-top: 10px; text-align: center;"></div>
+  </div>
+</div>
+
+<div id="propertyModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-property-modal-btn">&times;</span>
+    <h3 id="propertyModalTitle">Add New Property</h3>
+    <form id="propertyForm">
+      <input type="hidden" id="propDbId">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propTitle">Property Title*</label>
+          <input type="text" id="propTitle" required placeholder="e.g. Nova Smart Estate">
+        </div>
+        <div class="form-group">
+          <label for="propId">Unique ID (Optional)</label>
+          <input type="text" id="propId" placeholder="e.g. nova-smart-estate">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propLocation">Address/Location (e.g. Epe, Lagos)*</label>
+          <input type="text" id="propLocation" required placeholder="e.g. Epe, Lagos">
+        </div>
+        <div class="form-group">
+          <label for="propCity">City/LGA (matches location filters)*</label>
+          <input type="text" id="propCity" required placeholder="e.g. Epe">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propType">Type*</label>
+          <select id="propType" required>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+            <option value="land">Land</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="propStatus">Status*</label>
+          <select id="propStatus" required>
+            <option value="for-sale">For Sale</option>
+            <option value="for-rent">For Rent</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="featured">Featured</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propPrice">Price (Number in ₦)*</label>
+          <input type="number" id="propPrice" required placeholder="e.g. 25000000">
+        </div>
+        <div class="form-group">
+          <label for="propPriceFormatted">Price Label (Formatted text)*</label>
+          <input type="text" id="propPriceFormatted" required placeholder="e.g. ₦25,000,000 or from ₦25,000,000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propBeds">Beds (Null for Land)</label>
+          <input type="number" id="propBeds" placeholder="e.g. 5">
+        </div>
+        <div class="form-group">
+          <label for="propBaths">Baths (Null for Land)</label>
+          <input type="number" id="propBaths" placeholder="e.g. 6">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label for="propArea">Area (m²)*</label>
+          <input type="number" id="propArea" required placeholder="e.g. 450">
+        </div>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propImages">Images URL (Comma-separated)*</label>
+        <textarea id="propImages" required placeholder="e.g. https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80" style="height: 60px;"></textarea>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propDescription">Description*</label>
+        <textarea id="propDescription" required placeholder="Provide a detailed write-up about the property..." style="height: 100px;"></textarea>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propAmenities">Amenities (Comma-separated)</label>
+        <input type="text" id="propAmenities" placeholder="e.g. 24/7 Security, Paved Roads, Swimming Pool">
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 15px;">Save Property</button>
+    </form>
   </div>
 </div>
 
@@ -594,6 +847,12 @@
             <span class="amt">${priceText}</span>
             <a href="property-details.html?id=${prop.id}">View Details →</a>
           </div>
+          ${isAdmin ? `
+            <div class="admin-actions">
+              <button class="btn btn-ghost" style="flex: 1; padding: 6px 12px; font-size: 11px; border-color: var(--gold); color: var(--brown-deep);" onclick="window.editProperty('${prop.id}')">Edit</button>
+              <button class="btn btn-ghost" style="flex: 1; padding: 6px 12px; font-size: 11px; border-color: #d9534f; color: #d9534f;" onclick="window.deleteProperty('${prop.id}')">Delete</button>
+            </div>
+          ` : ''}
         </div>
       `;
       propertiesContainer.appendChild(card);
@@ -800,8 +1059,224 @@
     });
 
     initLocationDropdowns();
-    fetchProperties();
+    
+    // Check if admin token exists and is valid, then fetch properties
+    checkAdminStatus().then(fetchProperties);
   });
+
+  // ================= ADMIN DASHBOARD LOGIC =================
+  let isAdmin = false;
+
+  async function checkAdminStatus() {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/verify`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        isAdmin = true;
+        document.getElementById('adminControlPanel').style.display = 'flex';
+      } else {
+        localStorage.removeItem('adminToken');
+      }
+    } catch (err) {
+      console.warn("Token verification failed", err);
+    }
+  }
+
+  // Admin Login Triggers & Modal
+  document.getElementById('admin-login-trigger').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('adminLoginModal').classList.add('open');
+  });
+
+  document.getElementById('close-login-modal-btn').addEventListener('click', () => {
+    document.getElementById('adminLoginModal').classList.remove('open');
+    document.getElementById('loginError').textContent = '';
+  });
+
+  document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('adminUsername').value;
+    const password = document.getElementById('adminPassword').value;
+    const errorDiv = document.getElementById('loginError');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('adminToken', data.token);
+        isAdmin = true;
+        document.getElementById('adminControlPanel').style.display = 'flex';
+        document.getElementById('adminLoginModal').classList.remove('open');
+        document.getElementById('adminLoginForm').reset();
+        renderProperties(properties); // Re-render with actions
+      } else {
+        errorDiv.textContent = data.message || 'Login failed';
+      }
+    } catch (err) {
+      errorDiv.textContent = 'Server connection error';
+    }
+  });
+
+  // Admin Logout
+  function adminLogout() {
+    localStorage.removeItem('adminToken');
+    isAdmin = false;
+    document.getElementById('adminControlPanel').style.display = 'none';
+    renderProperties(properties);
+  }
+  document.getElementById('admin-logout-btn').addEventListener('click', adminLogout);
+
+  // Add/Edit Property Form Modal
+  const propModal = document.getElementById('propertyModal');
+  const propForm = document.getElementById('propertyForm');
+  
+  document.getElementById('open-add-modal-btn').addEventListener('click', () => {
+    document.getElementById('propertyModalTitle').textContent = "Add New Property";
+    propForm.reset();
+    document.getElementById('propDbId').value = '';
+    document.getElementById('propId').removeAttribute('disabled');
+    propModal.classList.add('open');
+  });
+
+  document.getElementById('close-property-modal-btn').addEventListener('click', () => {
+    propModal.classList.remove('open');
+  });
+
+  // Form Submit (POST / PUT)
+  propForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('adminToken');
+    if (!token) return alert('Session expired, please login again.');
+
+    const dbId = document.getElementById('propDbId').value;
+    const title = document.getElementById('propTitle').value;
+    const customId = document.getElementById('propId').value;
+    const location = document.getElementById('propLocation').value;
+    const city = document.getElementById('propCity').value;
+    const type = document.getElementById('propType').value;
+    const status = document.getElementById('propStatus').value;
+    const price = Number(document.getElementById('propPrice').value);
+    const priceFormatted = document.getElementById('propPriceFormatted').value;
+    const bedsInput = document.getElementById('propBeds').value;
+    const bathsInput = document.getElementById('propBaths').value;
+    const area = Number(document.getElementById('propArea').value);
+    const imagesStr = document.getElementById('propImages').value;
+    const description = document.getElementById('propDescription').value;
+    const amenitiesStr = document.getElementById('propAmenities').value;
+
+    const beds = bedsInput ? Number(bedsInput) : null;
+    const baths = bathsInput ? Number(bathsInput) : null;
+    const images = imagesStr.split(',').map(img => img.trim()).filter(img => img !== '');
+    const amenities = amenitiesStr.split(',').map(am => am.trim()).filter(am => am !== '');
+
+    const propertyBody = {
+      title,
+      location,
+      city,
+      type,
+      status,
+      price,
+      priceFormatted,
+      beds,
+      baths,
+      area,
+      images,
+      description,
+      amenities
+    };
+
+    if (customId) {
+      propertyBody.id = customId;
+    }
+
+    const method = dbId ? 'PUT' : 'POST';
+    const url = dbId ? `${API_BASE}/api/properties/${dbId}` : `${API_BASE}/api/properties`;
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(propertyBody)
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(dbId ? 'Property updated successfully!' : 'Property added successfully!');
+        propModal.classList.remove('open');
+        propForm.reset();
+        fetchProperties(); // Refresh from DB
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to backend API');
+    }
+  });
+
+  // Global functions exposed to window
+  window.editProperty = function(id) {
+    const prop = properties.find(p => p.id === id);
+    if (!prop) return alert('Property not found in local cache.');
+
+    document.getElementById('propertyModalTitle').textContent = "Edit Property";
+    document.getElementById('propDbId').value = prop.id;
+    document.getElementById('propTitle').value = prop.title;
+    document.getElementById('propId').value = prop.id;
+    document.getElementById('propId').setAttribute('disabled', 'true');
+    document.getElementById('propLocation').value = prop.location;
+    document.getElementById('propCity').value = prop.city;
+    document.getElementById('propType').value = prop.type;
+    document.getElementById('propStatus').value = prop.status;
+    document.getElementById('propPrice').value = prop.price;
+    document.getElementById('propPriceFormatted').value = prop.priceFormatted;
+    document.getElementById('propBeds').value = prop.beds || '';
+    document.getElementById('propBaths').value = prop.baths || '';
+    document.getElementById('propArea').value = prop.area;
+    document.getElementById('propImages').value = prop.images.join(', ');
+    document.getElementById('propDescription').value = prop.description;
+    document.getElementById('propAmenities').value = prop.amenities.join(', ');
+
+    propModal.classList.add('open');
+  };
+
+  window.deleteProperty = async function(id) {
+    if (!confirm('Are you absolutely sure you want to remove this property listing permanently?')) return;
+    const token = localStorage.getItem('adminToken');
+    if (!token) return alert('Session expired, please login again.');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/properties/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Property listing removed successfully!');
+        fetchProperties();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to backend API');
+    }
+  };
 </script>
 
 </body>

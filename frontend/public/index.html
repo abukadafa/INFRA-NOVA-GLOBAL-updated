@@ -350,6 +350,112 @@
     font-weight: 600;
     color: var(--olive);
   }
+
+  /* Site Gallery Styles */
+  .gallery-container { width: 100%; margin-top: 50px; border-top: 1px solid #eee3d4; padding-top: 40px; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .gallery-item {
+    aspect-ratio: 4/3;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(46,26,13,0.06);
+    border: 1px solid rgba(169,137,93,0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(46,26,13,0.12);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+  .gallery-item.hidden {
+    display: none;
+  }
+  @media(max-width: 900px) {
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media(max-width: 500px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Lightbox Modal Styles */
+  .lightbox {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(46, 26, 13, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    box-sizing: border-box;
+  }
+  .lightbox.open {
+    display: flex;
+  }
+  .lightbox-content {
+    max-width: 90%;
+    max-height: 80%;
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    animation: zoomIn 0.3s ease;
+  }
+  @keyframes zoomIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .lightbox-close:hover {
+    color: var(--gold-soft);
+  }
+  .lightbox-prev, .lightbox-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 36px;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 20px;
+    transition: color 0.2s ease;
+  }
+  .lightbox-prev { left: 20px; }
+  .lightbox-next { right: 20px; }
+  .lightbox-prev:hover, .lightbox-next:hover {
+    color: var(--gold-soft);
+  }
+  .lightbox-caption {
+    position: absolute;
+    bottom: 40px;
+    color: #fff;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+  }
 </style>
 </head>
 <body>
@@ -405,7 +511,7 @@
 <section id="overview" class="reveal">
   <div class="overview-grid">
     <div class="overview-media">
-      <img src="images/construction-road.jpg" alt="Engineering and construction works">
+      <img src="images/who-we-are.jpeg" alt="Engineering and construction works">
       <div class="cap">Engineering, construction &amp; infrastructure, one of seven core divisions</div>
     </div>
     <div class="overview-copy">
@@ -497,22 +603,22 @@
   <div class="showcase-grid">
     <div class="showcase-card">
       <div class="video-container">
-        <video src="videos/oil.mp4" autoplay loop muted playsinline></video>
-        <div class="video-badge">Oil Mill</div>
-      </div>
-      <div class="showcase-body">
-        <h4>Agro-Allied Oil Mill</h4>
-        <p>Real-time production and automated seed processing at our state-of-the-art milling facility.</p>
-      </div>
-    </div>
-    <div class="showcase-card">
-      <div class="video-container">
         <video src="videos/oil-1.mp4" autoplay loop muted playsinline></video>
         <div class="video-badge live">Ready Products</div>
       </div>
       <div class="showcase-body">
         <h4>Infranova Pure Soya Oil</h4>
         <p>Watch the finished pure soybean oil products packaged and bottled, ready for nationwide distribution.</p>
+      </div>
+    </div>
+    <div class="showcase-card">
+      <div class="video-container">
+        <video src="videos/oil.mp4" autoplay loop muted playsinline></video>
+        <div class="video-badge">Oil Mill</div>
+      </div>
+      <div class="showcase-body">
+        <h4>Agro-Allied Oil Mill</h4>
+        <p>Real-time production and automated seed processing at our state-of-the-art milling facility.</p>
       </div>
     </div>
   </div>
@@ -568,6 +674,50 @@
   <div class="scroll-hint">Scroll for more →</div>
   <div style="text-align: center; margin-top: 30px;">
     <a href="properties.html" class="btn btn-gold">View All Properties</a>
+  </div>
+
+  <!-- Construction Works Photo Gallery -->
+  <div class="gallery-container">
+    <h3 style="font-family:'Fraunces',serif; font-size:24px; color:var(--brown-deep); margin-bottom:12px; text-align:center;">Construction Site Gallery</h3>
+    <p style="font-size:14px; color:#5b5347; text-align:center; max-width:540px; margin:0 auto 30px; line-height:1.6; text-align: justify;">Browse on-site progress, finished foundations, civil layout, and drone captures from our various active sites across Nigeria.</p>
+    
+    <div class="gallery-grid">
+      <div class="gallery-item" onclick="window.openLightbox(0)"><img src="images/pic-1.jpeg" alt="Construction Work Photo 1"></div>
+      <div class="gallery-item" onclick="window.openLightbox(1)"><img src="images/pic-2.jpeg" alt="Construction Work Photo 2"></div>
+      <div class="gallery-item" onclick="window.openLightbox(2)"><img src="images/pic-3.jpeg" alt="Construction Work Photo 3"></div>
+      <div class="gallery-item" onclick="window.openLightbox(3)"><img src="images/pic-4.jpeg" alt="Construction Work Photo 4"></div>
+      <div class="gallery-item" onclick="window.openLightbox(4)"><img src="images/pic-5.jpeg" alt="Construction Work Photo 5"></div>
+      <div class="gallery-item" onclick="window.openLightbox(5)"><img src="images/pic-6.jpeg" alt="Construction Work Photo 6"></div>
+      <div class="gallery-item" onclick="window.openLightbox(6)"><img src="images/pic-7.jpeg" alt="Construction Work Photo 7"></div>
+      <div class="gallery-item" onclick="window.openLightbox(7)"><img src="images/pic-8.jpeg" alt="Construction Work Photo 8"></div>
+      
+      <!-- hidden items -->
+      <div class="gallery-item hidden" onclick="window.openLightbox(8)"><img src="images/pic-9.jpeg" alt="Construction Work Photo 9"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(9)"><img src="images/pic-10.jpeg" alt="Construction Work Photo 10"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(10)"><img src="images/pic-11.jpeg" alt="Construction Work Photo 11"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(11)"><img src="images/pic-12.jpeg" alt="Construction Work Photo 12"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(12)"><img src="images/pic-13.jpeg" alt="Construction Work Photo 13"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(13)"><img src="images/pic-14.jpeg" alt="Construction Work Photo 14"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(14)"><img src="images/pic-15.jpeg" alt="Construction Work Photo 15"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(15)"><img src="images/pic-16.jpeg" alt="Construction Work Photo 16"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(16)"><img src="images/pic-17.jpeg" alt="Construction Work Photo 17"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(17)"><img src="images/pic-18.jpeg" alt="Construction Work Photo 18"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(18)"><img src="images/pic-19.jpeg" alt="Construction Work Photo 19"></div>
+      <div class="gallery-item hidden" onclick="window.openLightbox(19)"><img src="images/pic-20.jpeg" alt="Construction Work Photo 20"></div>
+    </div>
+    
+    <div style="text-align: center; margin-top: 30px;">
+      <button id="toggleGalleryBtn" class="btn btn-ghost" style="border-color:var(--gold); color:var(--brown-deep);" onclick="window.toggleGallery()">View All 20 Site Photos</button>
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox" onclick="window.closeLightbox()">
+    <span class="lightbox-close" onclick="window.closeLightbox()">&times;</span>
+    <span class="lightbox-prev" onclick="window.changeLightboxSlide(-1, event)">&#10094;</span>
+    <span class="lightbox-next" onclick="window.changeLightboxSlide(1, event)">&#10095;</span>
+    <img id="lightboxImg" class="lightbox-content" src="" alt="Lightbox image">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
   </div>
 </section>
 
@@ -721,6 +871,55 @@
   document.getElementById('waBtn').addEventListener('click', ()=>{
     document.getElementById('chatBubble').classList.toggle('open');
   });
+
+  // ================= GALLERY LIGHTBOX LOGIC =================
+  const galleryImages = [];
+  for (let i = 1; i <= 20; i++) {
+    galleryImages.push(`images/pic-${i}.jpeg`);
+  }
+  let currentLightboxIdx = 0;
+
+  window.toggleGallery = function() {
+    const hiddenItems = document.querySelectorAll('.gallery-grid .gallery-item.hidden');
+    const allItems = document.querySelectorAll('.gallery-grid .gallery-item');
+    const btn = document.getElementById('toggleGalleryBtn');
+    
+    if (hiddenItems.length > 0) {
+      hiddenItems.forEach(item => item.classList.remove('hidden'));
+      btn.textContent = "Show Less";
+    } else {
+      allItems.forEach((item, idx) => {
+        if (idx >= 8) item.classList.add('hidden');
+      });
+      btn.textContent = "View All 20 Site Photos";
+      document.querySelector('.gallery-container').scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  window.openLightbox = function(idx) {
+    currentLightboxIdx = idx;
+    const lightbox = document.getElementById('lightbox');
+    const img = document.getElementById('lightboxImg');
+    const caption = document.getElementById('lightboxCaption');
+    
+    img.src = galleryImages[idx];
+    caption.textContent = `Construction Site Photo ${idx + 1} of 20`;
+    lightbox.classList.add('open');
+  };
+
+  window.closeLightbox = function() {
+    document.getElementById('lightbox').classList.remove('open');
+  };
+
+  window.changeLightboxSlide = function(dir, event) {
+    event.stopPropagation(); // prevent closing lightbox
+    currentLightboxIdx = (currentLightboxIdx + dir + galleryImages.length) % galleryImages.length;
+    
+    const img = document.getElementById('lightboxImg');
+    const caption = document.getElementById('lightboxCaption');
+    img.src = galleryImages[currentLightboxIdx];
+    caption.textContent = `Construction Site Photo ${currentLightboxIdx + 1} of 20`;
+  };
 </script>
 
 </body>
