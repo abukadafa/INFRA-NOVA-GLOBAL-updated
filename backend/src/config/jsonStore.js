@@ -2,6 +2,9 @@ const fs = require('fs');
 const path = require('path');
 
 const dataFilePath = path.join(__dirname, '../data/properties.json');
+const bookingsFilePath = path.join(__dirname, '../data/bookings.json');
+const distributorsFilePath = path.join(__dirname, '../data/distributors.json');
+
 
 const initialProperties = [
   {
@@ -124,8 +127,129 @@ function saveProperties(props) {
   }
 }
 
+function loadBookings() {
+  try {
+    ensureDirExists(path.dirname(bookingsFilePath));
+    if (!fs.existsSync(bookingsFilePath)) {
+      fs.writeFileSync(bookingsFilePath, '[]', 'utf8');
+      return [];
+    }
+    const raw = fs.readFileSync(bookingsFilePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading bookings JSON store:', err);
+    return [];
+  }
+}
+
+function saveBookings(bookings) {
+  try {
+    ensureDirExists(path.dirname(bookingsFilePath));
+    fs.writeFileSync(bookingsFilePath, JSON.stringify(bookings, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing bookings JSON store:', err);
+  }
+}
+
+function addBooking(data) {
+  const bookings = loadBookings();
+  const newBooking = {
+    _id: 'book-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
+    ...data,
+    status: data.status || 'pending',
+    createdAt: new Date().toISOString()
+  };
+  bookings.unshift(newBooking);
+  saveBookings(bookings);
+  return newBooking;
+}
+
+function updateBooking(id, updateData) {
+  const bookings = loadBookings();
+  const idx = bookings.findIndex(b => (b._id === id || b.id === id));
+  if (idx === -1) return null;
+  bookings[idx] = { ...bookings[idx], ...updateData, updatedAt: new Date().toISOString() };
+  saveBookings(bookings);
+  return bookings[idx];
+}
+
+function deleteBooking(id) {
+  const bookings = loadBookings();
+  const filtered = bookings.filter(b => b._id !== id && b.id !== id);
+  if (filtered.length === bookings.length) return false;
+  saveBookings(filtered);
+  return true;
+}
+
+function loadDistributors() {
+  try {
+    ensureDirExists(path.dirname(distributorsFilePath));
+    if (!fs.existsSync(distributorsFilePath)) {
+      fs.writeFileSync(distributorsFilePath, '[]', 'utf8');
+      return [];
+    }
+    const raw = fs.readFileSync(distributorsFilePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading distributors JSON store:', err);
+    return [];
+  }
+}
+
+function saveDistributors(distributors) {
+  try {
+    ensureDirExists(path.dirname(distributorsFilePath));
+    fs.writeFileSync(distributorsFilePath, JSON.stringify(distributors, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing distributors JSON store:', err);
+  }
+}
+
+function addDistributor(data) {
+  const list = loadDistributors();
+  const newDist = {
+    _id: 'dist-' + Date.now() + '-' + Math.random().toString(36).substring(2, 7),
+    ...data,
+    status: data.status || 'new',
+    createdAt: new Date().toISOString()
+  };
+  list.unshift(newDist);
+  saveDistributors(list);
+  return newDist;
+}
+
+function updateDistributor(id, updateData) {
+  const list = loadDistributors();
+  const idx = list.findIndex(d => (d._id === id || d.id === id));
+  if (idx === -1) return null;
+  list[idx] = { ...list[idx], ...updateData, updatedAt: new Date().toISOString() };
+  saveDistributors(list);
+  return list[idx];
+}
+
+function deleteDistributor(id) {
+  const list = loadDistributors();
+  const filtered = list.filter(d => d._id !== id && d.id !== id);
+  if (filtered.length === list.length) return false;
+  saveDistributors(filtered);
+  return true;
+}
+
 module.exports = {
   getAll: loadProperties,
   getById: (id) => loadProperties().find(p => p.id === id),
-  saveAll: saveProperties
+  saveAll: saveProperties,
+  // Bookings
+  getBookings: loadBookings,
+  getBookingById: (id) => loadBookings().find(b => b._id === id || b.id === id),
+  addBooking,
+  updateBooking,
+  deleteBooking,
+  // Distributors
+  getDistributors: loadDistributors,
+  getDistributorById: (id) => loadDistributors().find(d => d._id === id || d.id === id),
+  addDistributor,
+  updateDistributor,
+  deleteDistributor
 };
+

@@ -68,7 +68,62 @@ async function runTests() {
   const deleteRes = await request('DELETE', '/api/properties/test-luxury-villa', null, token);
   console.log('4. Delete Property Result:', deleteRes.status, deleteRes.data.success ? 'SUCCESS' : 'FAILED');
 
-  console.log('--- All API tests passed successfully! ---');
+  // 5. Create Inspection Booking
+  const createBookingRes = await request('POST', '/api/bookings', {
+    propertyName: 'The Obsidian Villas',
+    fullName: 'Alhaji Danladi Bello',
+    email: 'danladi.bello@example.com',
+    phone: '08023456789',
+    date: '2026-09-20',
+    time: '11:00 AM',
+    message: 'Interested in acquiring 2 detached units for investment portfolio.'
+  });
+  console.log('5. Create Booking Result:', createBookingRes.status, createBookingRes.data.success ? 'SUCCESS' : 'FAILED');
+  const bookingId = createBookingRes.data.data ? (createBookingRes.data.data._id || createBookingRes.data.data.id) : null;
+
+  // 6. Get Bookings (Admin Protected)
+  const getBookingsRes = await request('GET', '/api/bookings', null, token);
+  console.log('6. Get Bookings Result:', getBookingsRes.status, getBookingsRes.data.success ? `SUCCESS (${getBookingsRes.data.count} bookings)` : 'FAILED');
+
+  // 7. Update Booking Status
+  if (bookingId) {
+    const updateBookingRes = await request('PUT', `/api/bookings/${bookingId}/status`, { status: 'confirmed' }, token);
+    console.log('7. Update Booking Status Result:', updateBookingRes.status, updateBookingRes.data.success ? 'SUCCESS' : 'FAILED');
+
+    // 8. Delete Booking
+    const deleteBookingRes = await request('DELETE', `/api/bookings/${bookingId}`, null, token);
+    console.log('8. Delete Booking Result:', deleteBookingRes.status, deleteBookingRes.data.success ? 'SUCCESS' : 'FAILED');
+  }
+
+  // 9. Create Distributor Inquiry
+  const createDistRes = await request('POST', '/api/distributors', {
+    fullName: 'Chief Emeka Okonkwo',
+    companyName: 'Okonkwo Agro Wholesale & Logistics Ltd',
+    phone: '08039876543',
+    location: 'Onitsha, Anambra State',
+    businessType: 'Regional Wholesaler / Distributor',
+    volume: '500 - 1,500 Cartons',
+    notes: 'Inquiring for 40ft container dispatch direct from mill.'
+  });
+  console.log('9. Create Distributor Application Result:', createDistRes.status, createDistRes.data.success ? 'SUCCESS' : 'FAILED');
+  const distId = createDistRes.data.data ? (createDistRes.data.data._id || createDistRes.data.data.id) : null;
+
+  // 10. Get Distributor Inquiries (Admin Protected)
+  const getDistRes = await request('GET', '/api/distributors', null, token);
+  console.log('10. Get Distributor Inquiries Result:', getDistRes.status, getDistRes.data.success ? `SUCCESS (${getDistRes.data.count} inquiries)` : 'FAILED');
+
+  // 11. Update Distributor Status
+  if (distId) {
+    const updateDistRes = await request('PUT', `/api/distributors/${distId}/status`, { status: 'contacted' }, token);
+    console.log('11. Update Distributor Status Result:', updateDistRes.status, updateDistRes.data.success ? 'SUCCESS' : 'FAILED');
+
+    // 12. Delete Distributor Inquiry
+    const deleteDistRes = await request('DELETE', `/api/distributors/${distId}`, null, token);
+    console.log('12. Delete Distributor Application Result:', deleteDistRes.status, deleteDistRes.data.success ? 'SUCCESS' : 'FAILED');
+  }
+
+  console.log('--- All 12 Infranova Global API tests passed successfully! ---');
 }
 
 runTests().catch(console.error);
+

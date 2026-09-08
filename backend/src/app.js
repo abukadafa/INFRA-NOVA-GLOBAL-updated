@@ -7,6 +7,7 @@ const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const distributorRoutes = require('./routes/distributorRoutes');
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.use('/api/properties', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/distributors', distributorRoutes);
+
 
 // Base Route / Health Check
 app.get('/', (req, res) => {
