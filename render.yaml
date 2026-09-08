@@ -25,7 +25,6 @@ services:
   - type: web
     name: infranova-frontend
     runtime: static
-    plan: free
     buildCommand: echo "Static site ready"
     staticPublishPath: ./frontend/public
     routes:
