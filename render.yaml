@@ -2,7 +2,7 @@ services:
   # 1. Full-Stack Web Service (API + Integrated Portal)
   - type: web
     name: infranova-global
-    env: node
+    runtime: node
     plan: free
     region: frankfurt
     rootDir: backend
@@ -22,14 +22,16 @@ services:
         value: infranova2026
 
   # 2. Standalone Frontend Static Site (Global CDN)
-  - type: static
+  - type: web
     name: infranova-frontend
+    runtime: static
     plan: free
     region: frankfurt
-    rootDir: frontend/public
-    publishPath: .
+    buildCommand: echo "Static site ready"
+    staticPublishPath: ./frontend/public
     routes:
       - type: rewrite
         source: /api/*
         destination: https://infranova-global.onrender.com/api/*
+
 
