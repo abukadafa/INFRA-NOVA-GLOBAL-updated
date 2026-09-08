@@ -1,4 +1,5 @@
-﻿services:
+services:
+  # 1. Full-Stack Web Service (API + Integrated Portal)
   - type: web
     name: infranova-global
     env: node
@@ -19,3 +20,16 @@
         value: admin
       - key: ADMIN_PASSWORD
         value: infranova2026
+
+  # 2. Standalone Frontend Static Site (Global CDN)
+  - type: static
+    name: infranova-frontend
+    plan: free
+    region: frankfurt
+    rootDir: frontend/public
+    publishPath: .
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://infranova-global.onrender.com/api/*
+
