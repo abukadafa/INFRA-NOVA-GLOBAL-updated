@@ -1,0 +1,15 @@
+﻿{
+  "name": "infranova-global-portal",
+  "version": "1.0.0",
+  "description": "Infranova Global Concept Ltd — Parent Holding Entity Portal & API",
+  "main": "backend/src/server.js",
+  "scripts": {
+    "build": "npm --prefix backend install",
+    "start": "node backend/src/server.js",
+    "dev": "npm --prefix backend run dev",
+    "test": "node backend/src/scripts/test-api.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
