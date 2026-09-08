@@ -1,0 +1,131 @@
+const fs = require('fs');
+const path = require('path');
+
+const dataFilePath = path.join(__dirname, '../data/properties.json');
+
+const initialProperties = [
+  {
+    id: "obsidian-villas",
+    title: "The Obsidian Villas",
+    location: "Banana Island, Lagos",
+    city: "Lagos",
+    type: "residential",
+    status: "for-sale",
+    price: 850000000,
+    priceFormatted: "₦850,000,000",
+    beds: 5,
+    baths: 6,
+    area: 720,
+    images: [
+      "https://images.unsplash.com/photo-1613977257363-707ba9348227?w=1200&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80"
+    ],
+    videoUrl: "",
+    description: "The Obsidian Villas represent the absolute pinnacle of luxury waterfront living in Lagos. Located in the exclusive enclave of Banana Island.",
+    amenities: ["Ocean/Lagoon View", "Waterfront Dock", "Infinity Pool", "Smart Home Automation"],
+    specs: { "Property Type": "Waterfront Detached Villa", "Land Area": "950 m²" },
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "meridian-court",
+    title: "Meridian Court Apartments",
+    location: "Guzape, Abuja",
+    city: "Abuja",
+    type: "residential",
+    status: "featured",
+    price: 180000000,
+    priceFormatted: "₦180,000,000",
+    beds: 3,
+    baths: 4,
+    area: 240,
+    images: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
+      "https://images.unsplash.com/photo-1545466835-752157521fa9?w=1200&q=80"
+    ],
+    videoUrl: "",
+    description: "Positioned in the serene and rapidly appreciating hills of Guzape, Abuja, Meridian Court offers premium 3-bedroom apartments.",
+    amenities: ["City Views", "Swimming Pool", "Fitness Center", "24/7 Backup Power"],
+    specs: { "Property Type": "Luxury Apartment", "Total Units": "12 Units" },
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "nova-smart-estate",
+    title: "Nova Smart Estate",
+    location: "Epe, Lagos",
+    city: "Epe",
+    type: "land",
+    status: "coming-soon",
+    price: 25000000,
+    priceFormatted: "from ₦25,000,000",
+    beds: null,
+    baths: null,
+    area: 450,
+    images: [
+      "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1200&q=80"
+    ],
+    videoUrl: "",
+    description: "Nova Smart Estate is Infranova Global's signature master-planned community in Epe, Lagos.",
+    amenities: ["Smart Gated Entrance", "Underground Utility Cables", "Solar Street Lighting"],
+    specs: { "Property Type": "Serviced Plot of Land" },
+    createdAt: new Date().toISOString()
+  },
+  {
+    id: "infranova-business-tower",
+    title: "Infranova Business Tower",
+    location: "Victoria Island, Lagos",
+    city: "Lagos",
+    type: "commercial",
+    status: "for-sale",
+    price: 1200000000,
+    priceFormatted: "₦1,200,000,000",
+    beds: null,
+    baths: 12,
+    area: 2100,
+    images: [
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80"
+    ],
+    videoUrl: "",
+    description: "The Infranova Business Tower is a newly delivered Grade-A office building positioned on a prime street in Victoria Island, Lagos.",
+    amenities: ["Grade-A Workspace", "Underground Parking", "Dual High-Speed Lifts"],
+    specs: { "Property Type": "Grade-A Commercial Building" },
+    createdAt: new Date().toISOString()
+  }
+];
+
+function ensureDirExists(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+function loadProperties() {
+  try {
+    const dirPath = path.dirname(dataFilePath);
+    ensureDirExists(dirPath);
+    if (!fs.existsSync(dataFilePath)) {
+      fs.writeFileSync(dataFilePath, JSON.stringify(initialProperties, null, 2), 'utf8');
+      return initialProperties;
+    }
+    const raw = fs.readFileSync(dataFilePath, 'utf8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.error('Error reading JSON data store:', err);
+    return initialProperties;
+  }
+}
+
+function saveProperties(props) {
+  try {
+    const dirPath = path.dirname(dataFilePath);
+    ensureDirExists(dirPath);
+    fs.writeFileSync(dataFilePath, JSON.stringify(props, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error writing JSON data store:', err);
+  }
+}
+
+module.exports = {
+  getAll: loadProperties,
+  getById: (id) => loadProperties().find(p => p.id === id),
+  saveAll: saveProperties
+};

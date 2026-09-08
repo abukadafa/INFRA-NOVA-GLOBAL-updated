@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infranova Pure Soya Oil — Premium Agro-Allied Processing</title>
+<meta name="description" content="Infranova Pure Soya Oil - High-grade, hygienic, refined soybean oil for households, commercial bakeries, hotels, and food manufacturers across Nigeria.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<style>
+  :root{
+    --brown-deep:#2E1A0D;
+    --brown:#6B3410;
+    --gold:#A9895D;
+    --gold-soft:#D9C4A0;
+    --olive:#5B6B3A;
+    --cream:#FBF8F3;
+    --charcoal:#26201A;
+    --line: rgba(169,137,93,0.3);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--cream); color:var(--charcoal); font-family:'Inter', sans-serif; overflow-x:hidden; }
+  h1,h2,h3,h4,.display{font-family:'Fraunces', serif;}
+  a{text-decoration:none; color:inherit;}
+
+  nav{ position:fixed; top:0; left:0; right:0; z-index:900; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(46,26,13,0.95); backdrop-filter:blur(10px); }
+  .logo{ display:flex; align-items:center; gap:12px; font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:#fff; letter-spacing:.3px; line-height:1.2;}
+  .logo span{ color:var(--gold-soft); }
+  .logo .full{display:block;} .logo .sub{display:block; font-size:9px; letter-spacing:1.8px; color:var(--gold-soft); font-family:'Inter',sans-serif; font-weight:500; margin-top:2px;}
+  .navlinks{ display:flex; gap:26px; align-items:center; }
+  .navlinks a{ color:#eee3d3; font-size:13.5px; font-weight:500; letter-spacing:.2px; }
+  .navlinks a:hover{ color:var(--gold-soft); }
+  .navcta{ display:flex; gap:12px; align-items:center;}
+
+  .dropdown { position: relative; display: inline-block; }
+  .dropdown-content { display: none; position: absolute; top: 100%; left: 0; background: rgba(46,26,13,0.98); min-width: 200px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-radius: 4px; padding: 10px 0; z-index: 1000; border: 1px solid var(--gold); }
+  .dropdown-content a { color: #eee3d3; padding: 10px 18px; display: block; font-size: 13px; }
+  .dropdown-content a:hover { background: rgba(169,137,93,0.2); color: var(--gold-soft); }
+  .dropdown:hover .dropdown-content { display: block; }
+  
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:3px; font-size:13.5px; font-weight:600; letter-spacing:.3px; cursor:pointer; border:1px solid transparent; transition:all .25s ease; white-space:nowrap;}
+  .btn-gold{ background:var(--gold); color:var(--brown-deep); }
+  .btn-gold:hover{ background:var(--gold-soft); transform:translateY(-1px);}
+  .btn-olive{ background:var(--olive); color:#fff; }
+  .btn-olive:hover{ background:#4a5730; transform:translateY(-1px); }
+  .btn-ghost{ border-color:rgba(255,255,255,.4); color:#fff;}
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold-soft);}
+
+  @media(max-width:960px){ .navlinks{display:none;} nav{padding:14px 20px;} }
+
+  .soya-hero{
+    position:relative;
+    min-height:75vh;
+    display:flex;
+    align-items:center;
+    background:
+      linear-gradient(180deg, rgba(46,26,13,0.9) 0%, rgba(91,107,58,0.85) 100%),
+      url('https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=1600&q=80') no-repeat center center / cover;
+    padding:160px 48px 80px;
+    color:#fff;
+  }
+  .soya-hero-content{ max-width:900px; margin:0 auto; text-align:center; }
+  .badge-tag{ display: inline-block; background: rgba(91,107,58,0.4); border: 1px solid var(--olive); color: #fff; padding: 6px 18px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 20px; }
+  .soya-hero h1{ font-size: clamp(34px, 4.5vw, 56px); margin-bottom: 20px; color: #fff; line-height: 1.15; }
+  .soya-hero p{ font-size: 17px; color: var(--gold-soft); max-width: 740px; margin: 0 auto 32px; line-height: 1.7; }
+  .soya-hero-ctas{ display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+  section{ padding:90px 48px; max-width:1280px; margin:0 auto; }
+  .section-head{ text-align:center; max-width:720px; margin:0 auto 44px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .section-tag{ color:var(--olive); font-size:12px; letter-spacing:2.2px; text-transform:uppercase; font-weight:700; margin-bottom:10px; display:inline-block; text-align:center; }
+  .section-head h2{ font-size:clamp(26px,3.2vw,38px); font-weight:600; color:var(--brown-deep); max-width:620px; line-height:1.2; text-align:center; }
+
+  /* Profile Breakdown Grid */
+  .profile-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 60px; }
+  @media(max-width:900px){ .profile-grid{ grid-template-columns: 1fr; } }
+  .profile-card{ background: #fff; border-radius: 8px; border: 1px solid rgba(169,137,93,0.2); padding: 32px 28px; box-shadow: 0 8px 30px rgba(46,26,13,0.06); }
+  .profile-card h3{ font-size: 20px; color: var(--brown-deep); margin-bottom: 12px; border-bottom: 2px solid var(--gold-soft); padding-bottom: 8px; }
+  .profile-card p{ font-size: 14px; color: #5b5347; line-height: 1.65; }
+
+  /* Showcase Grid */
+  .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .showcase-card { background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 30px rgba(46,26,13,0.06); border: 1px solid rgba(169,137,93,0.15); display: flex; flex-direction: column; }
+  .video-container { position: relative; width: 100%; aspect-ratio: 9/16; max-height: 500px; overflow: hidden; background: #000; }
+  .video-container video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
+  .video-badge { position: absolute; top: 16px; left: 16px; background: rgba(91,107,58,0.9); color: #fff; padding: 5px 12px; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; border-radius: 2px; z-index: 2; }
+  .showcase-body { padding: 24px; }
+  .showcase-body h4 { font-size: 21px; color: var(--brown-deep); margin-bottom: 10px; }
+  .showcase-body p { font-size: 14px; color: #5b5347; line-height: 1.6; }
+  @media(max-width:900px){ .showcase-grid { grid-template-columns: 1fr; } }
+
+  .distributor-banner{ background: linear-gradient(135deg, var(--brown-deep) 0%, var(--olive) 100%); border-radius: 12px; padding: 60px 48px; color: #fff; text-align: center; margin: 40px auto; }
+  .distributor-banner h3{ font-size: 32px; color: #fff; margin-bottom: 16px; }
+  .distributor-banner p{ font-size: 16px; color: var(--gold-soft); max-width: 680px; margin: 0 auto 28px; line-height: 1.6; }
+
+  footer{ background:var(--brown-deep); color:#cbbca6; padding:60px 48px 30px;}
+  .footer-bottom{ max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; font-size:12px; color:#a3937c; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="Infranova Logo" style="height: 38px; width: auto; object-fit: contain;">
+    <div>
+      <span class="full">INFRANOVA <span>GLOBAL CONCEPT</span></span>
+      <span class="sub">LTD · PARENT HOLDING</span>
+    </div>
+  </a>
+  <div class="navlinks">
+    <a href="index.html">Infranova Global (Home)</a>
+    <div class="dropdown">
+      <a href="soya.html" style="color:var(--gold-soft); font-weight:700;">Pure Soya Oil ▾</a>
+      <div class="dropdown-content">
+        <a href="soya.html">Oil Mill &amp; Products</a>
+        <a href="distributor.html">Become a Distributor</a>
+      </div>
+    </div>
+    <a href="properties.html">Infranova Properties</a>
+    <a href="index.html#contact">Contact Us</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-gold" href="distributor.html">Become a Distributor</a>
+  </div>
+</nav>
+
+<header class="soya-hero">
+  <div class="soya-hero-content">
+    <span class="badge-tag">Agro-Allied Processing Division</span>
+    <h1>Infranova Pure Soya Oil</h1>
+    <p>Refined from high-grade Nigerian soybeans using modern, hygienic milling systems. Packaged in food-grade containers for households, bakeries, hotels, restaurants, and industrial manufacturers.</p>
+    <div class="soya-hero-ctas">
+      <a href="distributor.html" class="btn btn-gold">Apply as Distributor →</a>
+      <a href="#showcase" class="btn btn-ghost">Watch Mill Production</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- COMPANY PROFILE BREAKDOWN -->
+  <section>
+    <div class="section-head">
+      <div>
+        <span class="section-tag">Corporate Standing</span>
+        <h2>Infranova Agro-Allied Overview</h2>
+      </div>
+    </div>
+
+    <div class="profile-grid">
+      <div class="profile-card">
+        <h3>Our Mission</h3>
+        <p>To produce, refine, and distribute high-purity, healthy soybean oil across Nigeria and West Africa, supporting local farmers and strengthening regional food security.</p>
+      </div>
+
+      <div class="profile-card">
+        <h3>Our Vision</h3>
+        <p>To become West Africa’s premier agro-allied oil processing brand, recognized for uncompromised refining standards, ethical sourcing, and distributor satisfaction.</p>
+      </div>
+
+      <div class="profile-card">
+        <h3>Client Reach</h3>
+        <p>Serving households, retail supermarkets, commercial bakeries, hotels, restaurants, industrial food manufacturing plants, and regional distributor networks nationwide.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO SHOWCASE -->
+  <section id="showcase" style="background:#F6F3EC; border-radius:12px; padding:60px 48px;">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">Live Production Showcase</span>
+        <h2>Agro-Processing &amp; Ready Products</h2>
+      </div>
+    </div>
+
+    <div class="showcase-grid">
+      <div class="showcase-card">
+        <div class="video-container">
+          <video src="videos/oil-1.mp4" autoplay loop muted playsinline></video>
+          <div class="video-badge">Bottled &amp; Ready Products</div>
+        </div>
+        <div class="showcase-body">
+          <h4>Finished Pure Soya Oil</h4>
+          <p>Watch finished soybean oil packaged in tamper-proof, food-grade bottles ready for market delivery and bulk distributor dispatch.</p>
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <div class="video-container">
+          <video src="videos/oil.mp4" autoplay loop muted playsinline></video>
+          <div class="video-badge">Agro-Allied Mill</div>
+        </div>
+        <div class="showcase-body">
+          <h4>State-of-the-Art Milling Facility</h4>
+          <p>Real-time seed processing and automated refining operating under strict health and safety standards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISTRIBUTOR CTA BANNER -->
+  <div class="distributor-banner">
+    <h3>Become an Official Regional Oil Distributor</h3>
+    <p>Partner directly with Infranova Global Concept Ltd to receive factory-gate wholesale rates, priority stock allocations, and nationwide supply logistics.</p>
+    <a href="distributor.html" class="btn btn-gold" style="font-size:15px; padding:14px 32px;">Apply as Distributor via WhatsApp →</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 Infranova Global Concept Ltd. All rights reserved.</span>
+    <span>Infranova Pure Soya Oil · Agro-Allied Processing Division</span>
+  </div>
+</footer>
+
+</body>
+</html>

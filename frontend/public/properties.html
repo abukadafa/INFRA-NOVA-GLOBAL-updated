@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Properties | Infranova Global</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<style>
+  /* Header banner */
+  .page-header {
+    background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
+    padding: 160px 48px 80px;
+    text-align: center;
+    color: #fff;
+  }
+  .page-header h1 {
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .page-header p {
+    color: #c7d0d6;
+    font-size: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Filters container */
+  .filter-section {
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(8,32,50,0.06);
+    border-radius: 4px;
+    padding: 30px;
+    max-width: 1280px;
+    margin: -40px auto 40px;
+    position: relative;
+    z-index: 10;
+    border: 1px solid rgba(212,175,55,0.15);
+  }
+  .filter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .filter-search-group {
+    grid-column: span 2;
+  }
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .filter-group label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+    color: var(--navy-deep);
+  }
+  .filter-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    font-size: 14px;
+    font-family: inherit;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s ease;
+  }
+  .filter-input:focus {
+    border-color: var(--gold);
+  }
+  .btn-filter-reset {
+    background: var(--navy-deep);
+    color: #fff;
+    border: none;
+    padding: 13px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .2s ease;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-filter-reset:hover {
+    background: var(--emerald);
+  }
+
+  /* Catalog details */
+  .catalog-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto 24px;
+    padding: 0 48px;
+  }
+  .catalog-count {
+    font-size: 14.5px;
+    color: var(--text-muted);
+  }
+  .catalog-sort {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+  }
+  .catalog-sort select {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    background: #fff;
+    outline: none;
+    border-radius: 2px;
+  }
+
+  /* Properties grid */
+  .properties-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 30px;
+    max-width: 1280px;
+    margin: 0 auto 80px;
+    padding: 0 48px;
+  }
+
+  /* Card custom overrides */
+  .prop-card {
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(8,32,50,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+  .prop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 36px rgba(8,32,50,0.1);
+  }
+  .prop-img {
+    height: 240px;
+    position: relative;
+    overflow: hidden;
+    background: #eaeaea;
+  }
+  .prop-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .prop-card:hover .prop-img img {
+    transform: scale(1.05);
+  }
+  .badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: var(--emerald);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 2px;
+    z-index: 2;
+  }
+  .badge.gold { background: var(--gold); color: var(--navy-deep); }
+  .badge.gray { background: #5b6670; color: #fff; }
+  .badge.coming-soon { background: #082032; color: var(--gold-soft); }
+
+  .prop-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .prop-body .loc {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .prop-body h4 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: var(--navy-deep);
+    font-weight: 600;
+  }
+  .prop-desc-snippet {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .prop-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    border-top: 1px dashed #eee;
+    border-bottom: 1px dashed #eee;
+    padding: 10px 0;
+  }
+  .prop-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .prop-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+  }
+  .prop-price .amt {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    color: var(--navy-deep);
+    font-size: 17px;
+  }
+  .prop-price a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--emerald);
+    transition: color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .prop-price a:hover {
+    color: var(--gold);
+    transform: translateX(3px);
+  }
+
+  /* Empty state */
+  .no-results {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+  }
+  .no-results h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--navy-deep);
+  }
+  .no-results p {
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .no-results button {
+    display: inline-flex;
+    margin: 0 auto;
+  }
+
+  @media(max-width: 900px) {
+    .page-header {
+      padding: 120px 24px 60px;
+    }
+    .filter-section {
+      margin: -20px 24px 30px;
+      padding: 20px;
+    }
+    .filter-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .filter-search-group {
+      grid-column: span 2;
+    }
+    .catalog-info {
+      padding: 0 24px;
+    }
+    .properties-grid {
+      grid-template-columns: 1fr 1fr;
+      padding: 0 24px;
+      gap: 20px;
+    }
+  }
+  @media(max-width: 600px) {
+    .filter-grid {
+      grid-template-columns: 1fr;
+    }
+    .filter-search-group {
+      grid-column: span 1;
+    }
+    .properties-grid {
+      grid-template-columns: 1fr;
+    }
+    .catalog-info {
+      flex-direction: column;
+      gap: 12px;
+      align-items: flex-start;
+    }
+  }
+
+  /* Admin Dashboard UI Modals */
+  .modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(46, 26, 13, 0.75);
+    backdrop-filter: blur(4px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .modal.open {
+    display: flex;
+  }
+  .modal-content {
+    background-color: #fbf8f3;
+    border-radius: 8px;
+    padding: 30px;
+    width: 100%;
+    max-width: 550px;
+    box-shadow: 0 10px 30px rgba(46,26,13,0.22);
+    border: 1px solid rgba(169,137,93,0.3);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  .close-modal {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #8a7d6a;
+    transition: color 0.2s ease;
+    line-height: 1;
+  }
+  .close-modal:hover {
+    color: var(--brown-deep);
+  }
+  .modal h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--brown-deep);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  .form-group {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+  }
+  .form-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brown-deep);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    padding: 10px 14px;
+    border-radius: 4px;
+    border: 1px solid #eee3d4;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--charcoal);
+    outline: none;
+    background: #fff;
+    transition: border-color 0.2s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media(max-width: 550px) {
+    .form-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+  .admin-bar {
+    background: #fff;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 24px;
+    margin: 30px auto;
+    max-width: 1280px;
+    width: calc(100% - 96px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-sizing: border-box;
+  }
+  @media(max-width: 600px) {
+    .admin-bar {
+      width: calc(100% - 40px);
+      margin: 20px auto;
+      padding: 14px 20px;
+    }
+  }
+  .admin-bar h4 {
+    font-family: 'Fraunces', serif;
+    color: var(--brown-deep);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-weight: 600;
+  }
+  .admin-bar h4::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #25D366;
+    display: inline-block;
+  }
+  .admin-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    border-top: 1px solid #eee3d4;
+    padding-top: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- NAVIGATION -->
+<nav id="nav">
+  <a class="logo" href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none; color: #fff;">
+    <img src="images/logo.png" alt="Infranova Logo" style="height: 38px; width: auto; object-fit: contain;">
+    <div>
+      <span class="full" style="font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:#fff; letter-spacing:.3px; line-height:1.2; display: block;">INFRANOVA <span style="color:var(--gold-soft);">GLOBAL CONCEPT</span></span>
+      <span class="sub" style="display:block; font-size:9px; letter-spacing:1.8px; color:var(--gold-soft); font-family:'Inter',sans-serif; font-weight:500; margin-top:2px;">LTD · PARENT HOLDING</span>
+    </div>
+  </a>
+  <div class="navlinks">
+    <a href="index.html">Infranova Global (Home)</a>
+    <a href="soya.html">Pure Soya Oil</a>
+    <a href="distributor.html">Become a Distributor</a>
+    <a href="properties.html" style="color: var(--gold-soft); font-weight:700;">Infranova Properties</a>
+    <a href="index.html#contact">Contact Us</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-gold" href="index.html#contact">Talk to an Advisor</a>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <h1>Premium Properties</h1>
+  <p>Discover luxury villas, modern apartments, and smart-city investment options across prime locations in West Africa.</p>
+</header>
+
+<!-- FILTERING CONTROLS -->
+<section style="padding: 0; max-width: 100%;">
+  <div class="filter-section">
+    <div class="filter-grid">
+      <!-- Search -->
+      <div class="filter-group filter-search-group">
+        <label for="search">Keyword Search</label>
+        <input type="text" id="search" class="filter-input" placeholder="e.g. Villa, Banana Island, Penthouse...">
+      </div>
+      <!-- Price Range -->
+      <div class="filter-group">
+        <label for="price-range">Price Budget</label>
+        <select id="price-range" class="filter-input">
+          <option value="all">Any Price</option>
+          <option value="under-50m">Under ₦50M</option>
+          <option value="50m-250m">₦50M - ₦250M</option>
+          <option value="250m-600m">₦250M - ₦600M</option>
+          <option value="above-600m">Above ₦600M</option>
+        </select>
+      </div>
+      <!-- Reset -->
+      <button class="btn-filter-reset" id="reset-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Reset Filters
+      </button>
+
+      <!-- State -->
+      <div class="filter-group">
+        <label for="state-select">State</label>
+        <select id="state-select" class="filter-input">
+          <option value="all">All States</option>
+        </select>
+      </div>
+      <!-- LGA -->
+      <div class="filter-group">
+        <label for="lga-select">Local Gov. (LGA)</label>
+        <select id="lga-select" class="filter-input" disabled>
+          <option value="all">All LGAs</option>
+        </select>
+      </div>
+      <!-- Area -->
+      <div class="filter-group">
+        <label for="area-select">Area / Neighborhood</label>
+        <select id="area-select" class="filter-input" disabled>
+          <option value="all">All Areas</option>
+        </select>
+      </div>
+      <!-- Type -->
+      <div class="filter-group">
+        <label for="type">Property Type</label>
+        <select id="type" class="filter-input">
+          <option value="all">All Types</option>
+          <option value="residential">Residential</option>
+          <option value="commercial">Commercial</option>
+          <option value="land">Land</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ADMIN BAR -->
+<div id="adminControlPanel" class="admin-bar" style="display: none;">
+  <h4>Admin Control Session Active</h4>
+  <div style="display: flex; gap: 12px;">
+    <button class="btn btn-gold" id="open-add-modal-btn">+ Add New Property</button>
+    <button class="btn btn-ghost" style="border-color: #d9534f; color: #d9534f;" id="admin-logout-btn">Logout</button>
+  </div>
+</div>
+
+<!-- CATALOG INFO & SORTING -->
+<div class="catalog-info">
+  <div class="catalog-count" id="properties-count">Showing 0 properties</div>
+  <div class="catalog-sort">
+    <label for="sort">Sort By:</label>
+    <select id="sort">
+      <option value="default">Default</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="area-desc">Area: Largest first</option>
+    </select>
+  </div>
+</div>
+
+<!-- PROPERTIES GRID -->
+<main class="properties-grid" id="properties-container">
+  <!-- JavaScript will inject cards here -->
+</main>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:16px;">INFRA<span>NOVA</span> GLOBAL</div>
+      <p style="font-size:13.5px; color:#a9b6bd; line-height:1.7; max-width:280px;">Premium real estate development, property investment, and smart-city communities across Nigeria.</p>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a href="index.html#overview">About Us</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">News &amp; Blog</a></li>
+        <li><a href="#">Media Center</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Explore</h5>
+      <ul>
+        <li><a href="properties.html">Properties</a></li>
+        <li><a href="index.html#projects">Projects</a></li>
+        <li><a href="index.html#invest">Investment</a></li>
+        <li><a href="index.html#services">Services</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#" id="admin-login-trigger">Admin Login</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Contact</h5>
+      <ul>
+        <li style="color:#a9b6bd;">Suite 01, Nusaiba Towers</li>
+        <li style="color:#a9b6bd;">Ahmadu Bello Way, Abuja</li>
+        <li><a href="tel:+2348181412668" style="color:#a9b6bd;">+234 818 141 2668</a></li>
+        <li><a href="mailto:infranovagc@gmail.com" style="color:#a9b6bd;">infranovagc@gmail.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Infranova Global Concept Ltd. All rights reserved.</span>
+    <span>Building a Better Future with Excellence and Innovation.</span>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<div class="float-wa" id="waBtn" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38A9.95 9.95 0 0012.04 22c5.52 0 10-4.48 10-10s-4.48-10-10-10zm0 18.1c-1.6 0-3.1-.44-4.4-1.2l-.32-.19-3.12.82.83-3.04-.2-.32a8.1 8.1 0 01-1.24-4.27c0-4.48 3.65-8.13 8.13-8.13s8.13 3.65 8.13 8.13-3.65 8.2-8.01 8.2z"/></svg>
+</div>
+
+<!-- Chat widget (Infranova Assistant) -->
+<div class="chat-bubble" id="chatBubble">
+  <div class="chat-head"><span class="dot"></span><div><strong>Infranova Assistant</strong><span>Usually replies in a few minutes</span></div></div>
+  <div class="chat-body">
+    <div class="chat-msg">Hi! I'm the Infranova Assistant. Ask me about a property, an inspection booking, or investment options.</div>
+  </div>
+  <div class="chat-actions">
+    <button class="secondary" onclick="document.getElementById('chatBubble').classList.remove('open')">Close</button>
+    <button class="primary" onclick="window.open('https://wa.me/2348181412668','_blank')">Continue on WhatsApp</button>
+  </div>
+</div>
+
+<!-- ADMIN MODALS -->
+<div id="adminLoginModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-login-modal-btn">&times;</span>
+    <h3>Admin Authentication</h3>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" required placeholder="Enter admin username">
+      </div>
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" required placeholder="Enter admin password">
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 15px;">Login</button>
+    </form>
+    <div id="loginError" style="color: #d9534f; font-size: 12.5px; margin-top: 10px; text-align: center;"></div>
+  </div>
+</div>
+
+<div id="propertyModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="close-property-modal-btn">&times;</span>
+    <h3 id="propertyModalTitle">Add New Property</h3>
+    <form id="propertyForm">
+      <input type="hidden" id="propDbId">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propTitle">Property Title*</label>
+          <input type="text" id="propTitle" required placeholder="e.g. Nova Smart Estate">
+        </div>
+        <div class="form-group">
+          <label for="propId">Unique ID (Optional)</label>
+          <input type="text" id="propId" placeholder="e.g. nova-smart-estate">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propLocation">Address/Location (e.g. Epe, Lagos)*</label>
+          <input type="text" id="propLocation" required placeholder="e.g. Epe, Lagos">
+        </div>
+        <div class="form-group">
+          <label for="propCity">City/LGA (matches location filters)*</label>
+          <input type="text" id="propCity" required placeholder="e.g. Epe">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propType">Type*</label>
+          <select id="propType" required>
+            <option value="residential">Residential</option>
+            <option value="commercial">Commercial</option>
+            <option value="land">Land</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="propStatus">Status*</label>
+          <select id="propStatus" required>
+            <option value="for-sale">For Sale</option>
+            <option value="for-rent">For Rent</option>
+            <option value="coming-soon">Coming Soon</option>
+            <option value="featured">Featured</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propPrice">Price (Number in ₦)*</label>
+          <input type="number" id="propPrice" required placeholder="e.g. 25000000">
+        </div>
+        <div class="form-group">
+          <label for="propPriceFormatted">Price Label (Formatted text)*</label>
+          <input type="text" id="propPriceFormatted" required placeholder="e.g. ₦25,000,000 or from ₦25,000,000">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="propBeds">Beds (Null for Land)</label>
+          <input type="number" id="propBeds" placeholder="e.g. 5">
+        </div>
+        <div class="form-group">
+          <label for="propBaths">Baths (Null for Land)</label>
+          <input type="number" id="propBaths" placeholder="e.g. 6">
+        </div>
+        <div class="form-group" style="grid-column: span 2;">
+          <label for="propArea">Area (m²)*</label>
+          <input type="number" id="propArea" required placeholder="e.g. 450">
+        </div>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propImages">Images URL (Comma-separated)*</label>
+        <textarea id="propImages" required placeholder="e.g. https://images.unsplash.com/photo-1613977257363-707ba9348227?w=600&q=80" style="height: 60px;"></textarea>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propDescription">Description*</label>
+        <textarea id="propDescription" required placeholder="Provide a detailed write-up about the property..." style="height: 100px;"></textarea>
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label for="propAmenities">Amenities (Comma-separated)</label>
+        <input type="text" id="propAmenities" placeholder="e.g. 24/7 Security, Paved Roads, Swimming Pool">
+      </div>
+      <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 15px;">Save Property</button>
+    </form>
+  </div>
+</div>
+
+<!-- DATA AND SCRIPT LOAD -->
+<script src="js/nigeria-locations.js"></script>
+<script src="js/properties-data.js"></script>
+<script>
+  // DOM References
+  const propertiesContainer = document.getElementById('properties-container');
+  const propertiesCount = document.getElementById('properties-count');
+  const searchInput = document.getElementById('search');
+  const stateSelect = document.getElementById('state-select');
+  const lgaSelect = document.getElementById('lga-select');
+  const areaSelect = document.getElementById('area-select');
+  const typeSelect = document.getElementById('type');
+  const priceSelect = document.getElementById('price-range');
+  const sortSelect = document.getElementById('sort');
+  const resetBtn = document.getElementById('reset-btn');
+
+  // Dynamic API Base URL configuration (Render/Railway backend placeholder)
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:5000'
+    : 'https://infranova-backend.onrender.com'; // Live Render backend Web Service URL
+
+  // Load properties data from API with fallback
+  let properties = [];
+
+  async function fetchProperties() {
+    try {
+      const res = await fetch(`${API_BASE}/api/properties`);
+      const json = await res.json();
+      if (json.success) {
+        properties = json.data;
+      } else {
+        throw new Error(json.message);
+      }
+    } catch (err) {
+      console.warn("Failed to fetch properties from API, falling back to mock data file", err);
+      if (typeof propertiesData !== 'undefined') {
+        properties = propertiesData;
+      }
+    }
+    renderProperties(properties);
+  }
+
+  // Get status badge class and text
+  function getBadgeHTML(status) {
+    if (status === 'for-sale') {
+      return `<span class="badge">For Sale</span>`;
+    } else if (status === 'featured') {
+      return `<span class="badge gold">Featured</span>`;
+    } else if (status === 'coming-soon') {
+      return `<span class="badge coming-soon">Coming Soon</span>`;
+    } else if (status === 'for-rent') {
+      return `<span class="badge gray">For Rent</span>`;
+    }
+    return '';
+  }
+
+  // Render cards to container
+  function renderProperties(data) {
+    propertiesContainer.innerHTML = '';
+    propertiesCount.textContent = `Showing ${data.length} ${data.length === 1 ? 'property' : 'properties'}`;
+
+    if (data.length === 0) {
+      propertiesContainer.innerHTML = `
+        <div class="no-results">
+          <h3>No Properties Found</h3>
+          <p>No listings match your search criteria. Try adjusting or resetting your filters.</p>
+          <button class="btn btn-gold" id="grid-reset-btn">Reset Filters</button>
+        </div>
+      `;
+      document.getElementById('grid-reset-btn').addEventListener('click', resetFilters);
+      return;
+    }
+
+    data.forEach(prop => {
+      const mainImg = prop.images[0] || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80';
+      const metaHTML = prop.type === 'land' 
+        ? `<span>📏 ${prop.area} m²</span><span>📍 Land Banking</span>` 
+        : `<span>🛏️ ${prop.beds || 0} Beds</span><span>🛁 ${prop.baths || 0} Baths</span><span>📏 ${prop.area} m²</span>`;
+      
+      const priceText = prop.status === 'coming-soon' ? prop.priceFormatted : prop.priceFormatted;
+
+      const card = document.createElement('div');
+      card.className = 'prop-card';
+      card.innerHTML = `
+        <div class="prop-img">
+          ${getBadgeHTML(prop.status)}
+          <img src="${mainImg}" alt="${prop.title}">
+        </div>
+        <div class="prop-body">
+          <div class="loc">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${prop.location}
+          </div>
+          <h4>${prop.title}</h4>
+          <p class="prop-desc-snippet">${prop.description}</p>
+          <div class="prop-meta">
+            ${metaHTML}
+          </div>
+          <div class="prop-price">
+            <span class="amt">${priceText}</span>
+            <a href="property-details.html?id=${prop.id}">View Details →</a>
+          </div>
+          ${isAdmin ? `
+            <div class="admin-actions">
+              <button class="btn btn-ghost" style="flex: 1; padding: 6px 12px; font-size: 11px; border-color: var(--gold); color: var(--brown-deep);" onclick="window.editProperty('${prop.id}')">Edit</button>
+              <button class="btn btn-ghost" style="flex: 1; padding: 6px 12px; font-size: 11px; border-color: #d9534f; color: #d9534f;" onclick="window.deleteProperty('${prop.id}')">Delete</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+      propertiesContainer.appendChild(card);
+    });
+  }
+
+  // Filter & Sort Logic
+  function applyFilters() {
+    let filtered = [...properties];
+
+    // Search input
+    const query = searchInput.value.toLowerCase().trim();
+    if (query !== '') {
+      filtered = filtered.filter(prop => 
+        prop.title.toLowerCase().includes(query) || 
+        prop.location.toLowerCase().includes(query) || 
+        prop.description.toLowerCase().includes(query)
+      );
+    }
+
+    // Location dropdowns (State, LGA, Area)
+    const selectedState = stateSelect.value;
+    const selectedLga = lgaSelect.value;
+    const selectedArea = areaSelect.value;
+
+    if (selectedState !== 'all') {
+      const stateNorm = selectedState.replace(/\s*\(FCT\)/i, '').toLowerCase();
+      filtered = filtered.filter(prop => 
+        prop.city.toLowerCase().includes(stateNorm) || 
+        prop.location.toLowerCase().includes(stateNorm)
+      );
+    }
+
+    if (selectedLga !== 'all' && !lgaSelect.disabled) {
+      const lgaNorm = selectedLga.toLowerCase();
+      const lgaAreas = (typeof nigeriaLocations !== 'undefined' && nigeriaLocations[selectedState] && nigeriaLocations[selectedState].areas && nigeriaLocations[selectedState].areas[selectedLga]) || [];
+      const lgaAreasLower = lgaAreas.map(a => a.toLowerCase());
+      
+      filtered = filtered.filter(prop => {
+        const locLower = prop.location.toLowerCase();
+        if (locLower.includes(lgaNorm)) return true;
+        return lgaAreasLower.some(area => locLower.includes(area));
+      });
+    }
+
+    if (selectedArea !== 'all' && !areaSelect.disabled) {
+      const areaNorm = selectedArea.toLowerCase();
+      filtered = filtered.filter(prop => 
+        prop.location.toLowerCase().includes(areaNorm) || 
+        prop.title.toLowerCase().includes(areaNorm)
+      );
+    }
+
+    // Type dropdown
+    const type = typeSelect.value;
+    if (type !== 'all') {
+      filtered = filtered.filter(prop => prop.type === type);
+    }
+
+    // Price range dropdown
+    const priceRange = priceSelect.value;
+    if (priceRange !== 'all') {
+      if (priceRange === 'under-50m') {
+        filtered = filtered.filter(prop => prop.price < 50000000);
+      } else if (priceRange === '50m-250m') {
+        filtered = filtered.filter(prop => prop.price >= 50000000 && prop.price <= 250000000);
+      } else if (priceRange === '250m-600m') {
+        filtered = filtered.filter(prop => prop.price > 250000000 && prop.price <= 600000000);
+      } else if (priceRange === 'above-600m') {
+        filtered = filtered.filter(prop => prop.price > 600000000);
+      }
+    }
+
+    // Sort sorting
+    const sortBy = sortSelect.value;
+    if (sortBy === 'price-asc') {
+      filtered.sort((a, b) => a.price - b.price);
+    } else if (sortBy === 'price-desc') {
+      filtered.sort((a, b) => b.price - a.price);
+    } else if (sortBy === 'area-desc') {
+      filtered.sort((a, b) => b.area - a.area);
+    }
+
+    renderProperties(filtered);
+  }
+
+  // Reset all filters
+  function resetFilters() {
+    searchInput.value = '';
+    stateSelect.value = 'all';
+    
+    // Clear and disable children
+    lgaSelect.innerHTML = '<option value="all">All LGAs</option>';
+    lgaSelect.disabled = true;
+    areaSelect.innerHTML = '<option value="all">All Areas</option>';
+    areaSelect.disabled = true;
+
+    typeSelect.value = 'all';
+    priceSelect.value = 'all';
+    sortSelect.value = 'default';
+    renderProperties(properties);
+  }
+
+  // Initialize Nigeria locations dropdown
+  function initLocationDropdowns() {
+    if (typeof nigeriaLocations === 'undefined') return;
+
+    // Populate States
+    stateSelect.innerHTML = '<option value="all">All States</option>';
+    const states = Object.keys(nigeriaLocations).sort();
+    
+    // Put Lagos and Abuja first for better user experience
+    const lagosIdx = states.indexOf('Lagos');
+    if (lagosIdx > -1) {
+      states.splice(lagosIdx, 1);
+      states.unshift('Lagos');
+    }
+    const abujaIdx = states.indexOf('Abuja (FCT)');
+    if (abujaIdx > -1) {
+      states.splice(abujaIdx, 1);
+      states.splice(1, 0, 'Abuja (FCT)');
+    }
+
+    states.forEach(state => {
+      const opt = document.createElement('option');
+      opt.value = state;
+      opt.textContent = state;
+      stateSelect.appendChild(opt);
+    });
+
+    // State Change Event
+    stateSelect.addEventListener('change', () => {
+      const selectedState = stateSelect.value;
+      
+      // Clear LGA and Area
+      lgaSelect.innerHTML = '<option value="all">All LGAs</option>';
+      lgaSelect.disabled = true;
+      areaSelect.innerHTML = '<option value="all">All Areas</option>';
+      areaSelect.disabled = true;
+
+      if (selectedState !== 'all') {
+        const lgas = nigeriaLocations[selectedState].lgas || [];
+        if (lgas.length > 0) {
+          lgas.forEach(lga => {
+            const opt = document.createElement('option');
+            opt.value = lga;
+            opt.textContent = lga;
+            lgaSelect.appendChild(opt);
+          });
+          lgaSelect.disabled = false;
+        }
+      }
+      applyFilters();
+    });
+
+    // LGA Change Event
+    lgaSelect.addEventListener('change', () => {
+      const selectedState = stateSelect.value;
+      const selectedLga = lgaSelect.value;
+
+      areaSelect.innerHTML = '<option value="all">All Areas</option>';
+      areaSelect.disabled = true;
+
+      if (selectedLga !== 'all') {
+        const stateData = nigeriaLocations[selectedState];
+        const areas = (stateData.areas && stateData.areas[selectedLga]) || [];
+        if (areas.length > 0) {
+          areas.forEach(area => {
+            const opt = document.createElement('option');
+            opt.value = area;
+            opt.textContent = area;
+            areaSelect.appendChild(opt);
+          });
+          areaSelect.disabled = false;
+        }
+      }
+      applyFilters();
+    });
+
+    // Area Change Event
+    areaSelect.addEventListener('change', applyFilters);
+  }
+
+  // Event Listeners
+  searchInput.addEventListener('input', applyFilters);
+  typeSelect.addEventListener('change', applyFilters);
+  priceSelect.addEventListener('change', applyFilters);
+  sortSelect.addEventListener('change', applyFilters);
+  resetBtn.addEventListener('click', resetFilters);
+
+  // Initial Load
+  window.addEventListener('DOMContentLoaded', () => {
+    // Scroll Indicator
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+      document.getElementById('progress').style.width = pct + '%';
+      document.getElementById('nav').classList.toggle('scrolled', h.scrollTop > 40);
+    });
+
+    // Floating Widgets
+    document.getElementById('waBtn').addEventListener('click', ()=>{
+      document.getElementById('chatBubble').classList.toggle('open');
+    });
+
+    initLocationDropdowns();
+    
+    // Check if admin token exists and is valid, then fetch properties
+    checkAdminStatus().then(fetchProperties);
+  });
+
+  // ================= ADMIN DASHBOARD LOGIC =================
+  let isAdmin = false;
+
+  async function checkAdminStatus() {
+    const token = localStorage.getItem('adminToken');
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/verify`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        isAdmin = true;
+        document.getElementById('adminControlPanel').style.display = 'flex';
+      } else {
+        localStorage.removeItem('adminToken');
+      }
+    } catch (err) {
+      console.warn("Token verification failed", err);
+    }
+  }
+
+  // Admin Login Triggers & Modal
+  document.getElementById('admin-login-trigger').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.getElementById('adminLoginModal').classList.add('open');
+  });
+
+  document.getElementById('close-login-modal-btn').addEventListener('click', () => {
+    document.getElementById('adminLoginModal').classList.remove('open');
+    document.getElementById('loginError').textContent = '';
+  });
+
+  document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('adminUsername').value;
+    const password = document.getElementById('adminPassword').value;
+    const errorDiv = document.getElementById('loginError');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        localStorage.setItem('adminToken', data.token);
+        isAdmin = true;
+        document.getElementById('adminControlPanel').style.display = 'flex';
+        document.getElementById('adminLoginModal').classList.remove('open');
+        document.getElementById('adminLoginForm').reset();
+        renderProperties(properties); // Re-render with actions
+      } else {
+        errorDiv.textContent = data.message || 'Login failed';
+      }
+    } catch (err) {
+      errorDiv.textContent = 'Server connection error';
+    }
+  });
+
+  // Admin Logout
+  function adminLogout() {
+    localStorage.removeItem('adminToken');
+    isAdmin = false;
+    document.getElementById('adminControlPanel').style.display = 'none';
+    renderProperties(properties);
+  }
+  document.getElementById('admin-logout-btn').addEventListener('click', adminLogout);
+
+  // Add/Edit Property Form Modal
+  const propModal = document.getElementById('propertyModal');
+  const propForm = document.getElementById('propertyForm');
+  
+  document.getElementById('open-add-modal-btn').addEventListener('click', () => {
+    document.getElementById('propertyModalTitle').textContent = "Add New Property";
+    propForm.reset();
+    document.getElementById('propDbId').value = '';
+    document.getElementById('propId').removeAttribute('disabled');
+    propModal.classList.add('open');
+  });
+
+  document.getElementById('close-property-modal-btn').addEventListener('click', () => {
+    propModal.classList.remove('open');
+  });
+
+  // Form Submit (POST / PUT)
+  propForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('adminToken');
+    if (!token) return alert('Session expired, please login again.');
+
+    const dbId = document.getElementById('propDbId').value;
+    const title = document.getElementById('propTitle').value;
+    const customId = document.getElementById('propId').value;
+    const location = document.getElementById('propLocation').value;
+    const city = document.getElementById('propCity').value;
+    const type = document.getElementById('propType').value;
+    const status = document.getElementById('propStatus').value;
+    const price = Number(document.getElementById('propPrice').value);
+    const priceFormatted = document.getElementById('propPriceFormatted').value;
+    const bedsInput = document.getElementById('propBeds').value;
+    const bathsInput = document.getElementById('propBaths').value;
+    const area = Number(document.getElementById('propArea').value);
+    const imagesStr = document.getElementById('propImages').value;
+    const description = document.getElementById('propDescription').value;
+    const amenitiesStr = document.getElementById('propAmenities').value;
+
+    const beds = bedsInput ? Number(bedsInput) : null;
+    const baths = bathsInput ? Number(bathsInput) : null;
+    const images = imagesStr.split(',').map(img => img.trim()).filter(img => img !== '');
+    const amenities = amenitiesStr.split(',').map(am => am.trim()).filter(am => am !== '');
+
+    const propertyBody = {
+      title,
+      location,
+      city,
+      type,
+      status,
+      price,
+      priceFormatted,
+      beds,
+      baths,
+      area,
+      images,
+      description,
+      amenities
+    };
+
+    if (customId) {
+      propertyBody.id = customId;
+    }
+
+    const method = dbId ? 'PUT' : 'POST';
+    const url = dbId ? `${API_BASE}/api/properties/${dbId}` : `${API_BASE}/api/properties`;
+
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(propertyBody)
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(dbId ? 'Property updated successfully!' : 'Property added successfully!');
+        propModal.classList.remove('open');
+        propForm.reset();
+        fetchProperties(); // Refresh from DB
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to backend API');
+    }
+  });
+
+  // Global functions exposed to window
+  window.editProperty = function(id) {
+    const prop = properties.find(p => p.id === id);
+    if (!prop) return alert('Property not found in local cache.');
+
+    document.getElementById('propertyModalTitle').textContent = "Edit Property";
+    document.getElementById('propDbId').value = prop.id;
+    document.getElementById('propTitle').value = prop.title;
+    document.getElementById('propId').value = prop.id;
+    document.getElementById('propId').setAttribute('disabled', 'true');
+    document.getElementById('propLocation').value = prop.location;
+    document.getElementById('propCity').value = prop.city;
+    document.getElementById('propType').value = prop.type;
+    document.getElementById('propStatus').value = prop.status;
+    document.getElementById('propPrice').value = prop.price;
+    document.getElementById('propPriceFormatted').value = prop.priceFormatted;
+    document.getElementById('propBeds').value = prop.beds || '';
+    document.getElementById('propBaths').value = prop.baths || '';
+    document.getElementById('propArea').value = prop.area;
+    document.getElementById('propImages').value = prop.images.join(', ');
+    document.getElementById('propDescription').value = prop.description;
+    document.getElementById('propAmenities').value = prop.amenities.join(', ');
+
+    propModal.classList.add('open');
+  };
+
+  window.deleteProperty = async function(id) {
+    if (!confirm('Are you absolutely sure you want to remove this property listing permanently?')) return;
+    const token = localStorage.getItem('adminToken');
+    if (!token) return alert('Session expired, please login again.');
+
+    try {
+      const res = await fetch(`${API_BASE}/api/properties/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Property listing removed successfully!');
+        fetchProperties();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to backend API');
+    }
+  };
+</script>
+
+</body>
+</html>
