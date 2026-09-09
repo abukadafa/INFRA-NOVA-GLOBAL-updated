@@ -3,14 +3,10 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const connStr = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/infranova';
-    
-    // Connect to database
-    const conn = await mongoose.connect(connStr);
-    
-    console.log(`MongoDB Connected successfully to database: ${conn.connection.db.databaseName}`);
+    const conn = await mongoose.connect(connStr, { serverSelectionTimeoutMS: 2000 });
+    console.log(`MongoDB Connected successfully: ${conn.connection.host}`);
   } catch (error) {
-    console.error(`MongoDB Connection Error: ${error.message}`);
-    process.exit(1);
+    console.warn(`MongoDB Notice: ${error.message}. Backend will use local JSON data store fallback.`);
   }
 };
 

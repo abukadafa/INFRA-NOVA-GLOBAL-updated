@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Become an Oil Distributor — Infranova Pure Soya Oil</title>
+<meta name="description" content="Apply to become an official distributor of Infranova Pure Soya Oil across Nigeria and West Africa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<style>
+  :root{
+    --brown-deep:#2E1A0D;
+    --brown:#6B3410;
+    --gold:#A9895D;
+    --gold-soft:#D9C4A0;
+    --olive:#5B6B3A;
+    --cream:#FBF8F3;
+    --charcoal:#26201A;
+    --line: rgba(169,137,93,0.3);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{ background:var(--cream); color:var(--charcoal); font-family:'Inter', sans-serif; overflow-x:hidden; }
+  h1,h2,h3,h4,.display{font-family:'Fraunces', serif;}
+  a{text-decoration:none; color:inherit;}
+
+  nav{ position:fixed; top:0; left:0; right:0; z-index:900; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(46,26,13,0.95); backdrop-filter:blur(10px); }
+  .logo{ display:flex; align-items:center; gap:12px; font-family:'Fraunces',serif; font-size:16px; font-weight:600; color:#fff; letter-spacing:.3px; line-height:1.2;}
+  .logo span{ color:var(--gold-soft); }
+  .logo .full{display:block;} .logo .sub{display:block; font-size:9px; letter-spacing:1.8px; color:var(--gold-soft); font-family:'Inter',sans-serif; font-weight:500; margin-top:2px;}
+  .navlinks{ display:flex; gap:30px; }
+  .navlinks a{ color:#eee3d3; font-size:13.5px; font-weight:500; letter-spacing:.2px; }
+  .navlinks a:hover{ color:var(--gold-soft); }
+  .navcta{ display:flex; gap:12px; align-items:center;}
+  
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:3px; font-size:13.5px; font-weight:600; letter-spacing:.3px; cursor:pointer; border:1px solid transparent; transition:all .25s ease; white-space:nowrap;}
+  .btn-gold{ background:var(--gold); color:var(--brown-deep); }
+  .btn-gold:hover{ background:var(--gold-soft); transform:translateY(-1px);}
+  .btn-olive{ background:var(--olive); color:#fff; }
+  .btn-olive:hover{ background:#4a5730; transform:translateY(-1px); }
+  .btn-whatsapp{ background:#25D366; color:#fff; font-size:15px; padding:14px 28px; justify-content:center; width:100%; border-radius:6px;}
+  .btn-whatsapp:hover{ background:#20bd5a; transform:translateY(-2px); box-shadow:0 8px 20px rgba(37,211,102,0.3); }
+
+  @media(max-width:960px){ .navlinks{display:none;} nav{padding:14px 20px;} }
+
+  .page-hero{
+    padding: 160px 48px 60px;
+    background: linear-gradient(180deg, var(--brown-deep) 0%, #4a2a14 100%);
+    color: #fff;
+    text-align: center;
+  }
+  .page-hero h1{ font-size: clamp(30px, 4vw, 48px); margin-bottom: 16px; color: #fff; }
+  .page-hero p{ font-size: 16px; color: var(--gold-soft); max-width: 650px; margin: 0 auto 24px; line-height: 1.6; }
+  .badge-tag{ display: inline-block; background: rgba(91,107,58,0.3); border: 1px solid var(--olive); color: #fff; padding: 6px 16px; border-radius: 20px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; margin-bottom: 16px; }
+
+  .container{ max-width: 1100px; margin: -40px auto 90px; padding: 0 24px; position: relative; z-index: 10; }
+  
+  .distributor-grid{ display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; }
+  @media(max-width:880px){ .distributor-grid{ grid-template-columns: 1fr; } }
+
+  .benefits-card{
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px 36px;
+    box-shadow: 0 10px 40px rgba(46,26,13,0.08);
+    border: 1px solid rgba(169,137,93,0.2);
+    height: fit-content;
+  }
+  .benefits-card h3{ font-size: 24px; color: var(--brown-deep); margin-bottom: 20px; border-bottom: 2px solid var(--gold-soft); padding-bottom: 12px; }
+  .benefit-item{ display: flex; gap: 14px; margin-bottom: 22px; align-items: flex-start; }
+  .benefit-icon{ width: 36px; height: 36px; border-radius: 50%; background: rgba(91,107,58,0.12); color: var(--olive); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: 700; font-size: 15px; }
+  .benefit-text h4{ font-size: 16px; color: var(--brown-deep); margin-bottom: 4px; font-family: 'Inter', sans-serif; font-weight: 600; }
+  .benefit-text p{ font-size: 13.5px; color: #5b5347; line-height: 1.5; }
+
+  .form-card{
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px 36px;
+    box-shadow: 0 14px 44px rgba(46,26,13,0.1);
+    border: 1px solid rgba(169,137,93,0.25);
+  }
+  .form-card h3{ font-size: 26px; color: var(--brown-deep); margin-bottom: 8px; }
+  .form-card p.subtitle{ font-size: 14px; color: #6b5e50; margin-bottom: 28px; line-height: 1.5; }
+
+  .form-group{ margin-bottom: 20px; }
+  .form-group label{ display: block; font-size: 13px; font-weight: 600; color: var(--brown-deep); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .form-group input, .form-group select, .form-group textarea{
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #dcd4c8;
+    border-radius: 6px;
+    font-size: 14.5px;
+    font-family: 'Inter', sans-serif;
+    color: var(--charcoal);
+    background: #faf7f2;
+    transition: all 0.25s ease;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus{
+    outline: none;
+    border-color: var(--gold);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(169,137,93,0.15);
+  }
+
+  .form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width: 580px){ .form-row{ grid-template-columns: 1fr; } }
+
+  .direct-notice{ background: #eef9f2; border: 1px solid #c2e8ce; border-radius: 6px; padding: 14px 16px; font-size: 13px; color: #1e6037; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+
+  footer{ background:var(--brown-deep); color:#cbbca6; padding:60px 48px 30px; margin-top: 80px;}
+  .footer-bottom{ max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; font-size:12px; color:#a3937c; flex-wrap:wrap; gap:10px;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="Infranova Logo" style="height: 38px; width: auto; object-fit: contain;">
+    <div>
+      <span class="full">INFRANOVA <span>GLOBAL CONCEPT</span></span>
+      <span class="sub">LTD · PARENT HOLDING</span>
+    </div>
+  </a>
+  <div class="navlinks">
+    <a href="index.html">Infranova Global (Home)</a>
+    <a href="soya.html">Pure Soya Oil</a>
+    <a href="distributor.html" style="color:var(--gold-soft); font-weight:700;">Become a Distributor</a>
+    <a href="properties.html">Infranova Properties</a>
+    <a href="index.html#contact">Contact Us</a>
+  </div>
+  <div class="navcta">
+    <a class="btn btn-gold" href="index.html#contact">Contact Us</a>
+  </div>
+</nav>
+
+<header class="page-hero">
+  <span class="badge-tag">Official Agro-Allied Partnership</span>
+  <h1>Become an Oil Distributor</h1>
+  <p>Partner with Infranova Global Concept Ltd to distribute high-grade, hygienic, refined Infranova Pure Soya Oil to households, retailers, and industrial clients nationwide.</p>
+</header>
+
+<main class="container">
+  <div class="distributor-grid">
+    <!-- Left Column: Benefits & Information -->
+    <div class="benefits-card">
+      <h3>Why Partner With Us?</h3>
+      
+      <div class="benefit-item">
+        <div class="benefit-icon">✓</div>
+        <div class="benefit-text">
+          <h4>Premium Agro-Refined Quality</h4>
+          <p>Processed from top-tier Nigerian soybeans using modern food-grade refining and automated packaging systems.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">✓</div>
+        <div class="benefit-text">
+          <h4>Competitive Wholesaler Pricing</h4>
+          <p>Gain direct factory-gate wholesale rates with high profit margins for distributors and major regional suppliers.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">✓</div>
+        <div class="benefit-text">
+          <h4>Nationwide &amp; Regional Supply Chain</h4>
+          <p>Reliable supply and logistics handling from our central milling complex in Abuja to your location across Nigeria or West Africa.</p>
+        </div>
+      </div>
+
+      <div class="benefit-item">
+        <div class="benefit-icon">✓</div>
+        <div class="benefit-text">
+          <h4>Dedicated Distributor Support</h4>
+          <p>Direct communication with our sales reps, marketing collaterals, and priority stock reservation during peak demand cycles.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Distributor Application Form -->
+    <div class="form-card">
+      <h3>Distributor Application Form</h3>
+      <p class="subtitle">Fill out your business details below. Clicking <strong>Submit Application via WhatsApp</strong> will prepare your official inquiry and open direct chat with our sales team.</p>
+
+      <form id="distributorForm" onsubmit="handleDistributorSubmit(event)">
+        <div class="form-group">
+          <label for="fullName">Full Name *</label>
+          <input type="text" id="fullName" placeholder="e.g. Alhaji Ibrahim Musa" required>
+        </div>
+
+        <div class="form-group">
+          <label for="companyName">Business / Company Name *</label>
+          <input type="text" id="companyName" placeholder="e.g. Musa Agro Supplies & Logistics Ltd" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone">Phone Number / WhatsApp *</label>
+            <input type="tel" id="phone" placeholder="e.g. 0803 123 4567" required>
+          </div>
+          <div class="form-group">
+            <label for="location">State / Location *</label>
+            <input type="text" id="location" placeholder="e.g. Kano, Abuja, Lagos..." required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="businessType">Business Category *</label>
+            <select id="businessType" required>
+              <option value="">-- Select Category --</option>
+              <option value="Regional Wholesaler / Distributor">Regional Wholesaler / Distributor</option>
+              <option value="Retail Supermarket / Chain">Retail Supermarket / Chain</option>
+              <option value="Hotel / Restaurant / Catering">Hotel / Restaurant / Catering</option>
+              <option value="Industrial / Food Manufacturer">Industrial / Food Manufacturer</option>
+              <option value="Export / International Merchant">Export / International Merchant</option>
+              <option value="Individual Entrepreneur">Individual Entrepreneur</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="volume">Estimated Monthly Supply *</label>
+            <select id="volume" required>
+              <option value="">-- Select Volume --</option>
+              <option value="50 - 200 Cartons">50 - 200 Cartons</option>
+              <option value="200 - 500 Cartons">200 - 500 Cartons</option>
+              <option value="500 - 1,500 Cartons">500 - 1,500 Cartons</option>
+              <option value="1,500+ Cartons / Bulk Tankers">1,500+ Cartons / Bulk Tankers</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Additional Comments / Specific Request</label>
+          <textarea id="notes" rows="3" placeholder="Specify any delivery requirements, custom packaging requests, or questions..."></textarea>
+        </div>
+
+        <div class="direct-notice">
+          <span>📲 Application data will be sent directly to our official WhatsApp sales desk for rapid response.</span>
+        </div>
+
+        <button type="submit" class="btn btn-whatsapp">
+          <span>Submit Application via WhatsApp →</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-bottom">
+    <span>© 2026 Infranova Global Concept Ltd. All rights reserved.</span>
+    <span>Building a Better Future with Excellence and Innovation.</span>
+  </div>
+</footer>
+
+<script>
+  const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? 'http://localhost:5000' 
+    : '';
+
+  async function handleDistributorSubmit(event) {
+    event.preventDefault();
+    
+    const fullName = document.getElementById('fullName').value.trim();
+    const companyName = document.getElementById('companyName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const location = document.getElementById('location').value.trim();
+    const businessType = document.getElementById('businessType').value;
+    const volume = document.getElementById('volume').value;
+    const notes = document.getElementById('notes').value.trim() || 'N/A';
+
+    // Asynchronously log lead in the Infranova backend
+    try {
+      await fetch(`${API_BASE}/api/distributors`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName,
+          companyName,
+          phone,
+          location,
+          businessType,
+          volume,
+          notes
+        })
+      });
+    } catch (err) {
+      console.warn('Could not record application in backend:', err);
+    }
+
+    const message = `Hello Infranova Global Concept Ltd,
+
+I would like to apply to become an official Distributor for *Infranova Pure Soya Oil*.
+
+📋 *APPLICANT DETAILS:*
+• *Full Name:* ${fullName}
+• *Business Name:* ${companyName}
+• *Phone Number:* ${phone}
+• *Location/State:* ${location}
+• *Business Category:* ${businessType}
+• *Estimated Monthly Volume:* ${volume}
+• *Additional Comments:* ${notes}
+
+Please review my application and provide distributor onboarding guidelines and pricing. Thank you!`;
+
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/2348181412668?text=${encodedMessage}`;
+    
+    // Open WhatsApp in new tab
+    window.open(whatsappUrl, '_blank');
+  }
+</script>
+
+</body>
+</html>

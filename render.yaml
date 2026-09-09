@@ -1,0 +1,35 @@
+services:
+  # 1. Full-Stack Web Service (API + Integrated Portal)
+  - type: web
+    name: infranova-global
+    runtime: node
+    plan: free
+    region: frankfurt
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        value: infranova2026
+
+  # 2. Standalone Frontend Static Site (Global CDN)
+  - type: web
+    name: infranova-frontend
+    runtime: static
+    buildCommand: echo "Static site ready"
+    staticPublishPath: ./frontend/public
+    routes:
+      - type: rewrite
+        source: /api/*
+        destination: https://infranova-global.onrender.com/api/*
+
+

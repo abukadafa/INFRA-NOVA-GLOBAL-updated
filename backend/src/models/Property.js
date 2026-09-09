@@ -56,6 +56,10 @@ const propertySchema = new mongoose.Schema({
     type: [String],
     default: []
   },
+  videoUrl: {
+    type: String,
+    default: ''
+  },
   description: {
     type: String,
     required: true
